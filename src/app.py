@@ -11,3 +11,8 @@ app.register_blueprint(exercises_bp)
 @app.route("/")
 def hello():
     return "Hello World!"
+
+@app.errorhandler(404)
+# Why does 'err' need to go into the parameter?
+def not_found(err):
+    return {'error': 'Not Found'}, 404

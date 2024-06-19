@@ -11,4 +11,4 @@ class Exercise(db.Model):
 
 class ExerciseSchema(ma.Schema):
     class Meta:
-        fields = ("exercise", "description")
+        fields = ("id", "exercise", "description")

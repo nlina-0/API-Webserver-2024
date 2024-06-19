@@ -1,1 +1,1 @@
-FLASK_DEBUG=true
+FLASK_DEBUG=True

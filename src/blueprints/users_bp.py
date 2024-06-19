@@ -12,8 +12,8 @@ def get_users():
     return UserSchema(many=True).dump(users)
 
 # Register (P); User - Not completed
-@users_bp.route('/register', methods=['POST'])
+@users_bp.route("/register", methods=["POST"])
 def create_user():
-    # What does this do exactly? Load is used to run the incoming request through the user schema
+    # Load is used to run the incoming request through the user schema
     params = UserSchema(only=["name", "email"]).load(request.json)
     return params
