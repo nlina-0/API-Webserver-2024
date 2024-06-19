@@ -1,5 +1,6 @@
 from flask import Blueprint
 from models.user import User
+from models.exercise import Exercise
 from init import db
 
 db_commands = Blueprint('spam', __name__)
@@ -10,8 +11,6 @@ def db_create():
     db.create_all()
     print("Created tables")
 
-@db_commands.cli.command("seed")
-def seed_db():
     users = [
         User(
             name="John Doe",
@@ -24,6 +23,20 @@ def seed_db():
     ]
 
     db.session.add_all(users)
-    db.session.commit()
 
+    exercises = [
+        Exercise(
+            exercise="Squat",
+            description="Lower body exercise."
+        ),
+        Exercise(
+            exercise="Deadlift",
+            description="Full body exercise."
+        )
+    ]
+
+    db.session.add_all(exercises)
+
+    db.session.commit()
     print("Users added")
+    print("Exercises added")
