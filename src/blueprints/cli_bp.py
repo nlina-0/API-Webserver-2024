@@ -1,9 +1,9 @@
 from flask import Blueprint
 from models.user import User
 from models.exercise import Exercise
-from init import db
+from init import db, bcrypt
 
-db_commands = Blueprint('spam', __name__)
+db_commands = Blueprint('db', __name__)
 
 @db_commands.cli.command("create")
 def db_create():
@@ -13,16 +13,20 @@ def db_create():
 
     users = [
         User(
-            name="John Doe",
-            email="doe@mail.com"
+            # name="John Doe",
+            email="doe@mail.com",
+            password=bcrypt.generate_password_hash("123456").decode("utf8"),
+            is_admin=True
         ),
         User(
             name="Sam Jane",
-            email="jane@mail.com"
+            email="jane@mail.com",
+            password=bcrypt.generate_password_hash("523456").decode("utf8")
         )
     ]
 
     db.session.add_all(users)
+    db.session.commit()
 
     exercises = [
         Exercise(
