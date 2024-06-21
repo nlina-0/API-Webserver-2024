@@ -3,6 +3,7 @@ from flask import Blueprint
 from models.user import User
 from models.exercise import Exercise
 from models.session import Session
+from models.exercise_set import ExerciseSet
 from init import db, bcrypt
 
 db_commands = Blueprint('db', __name__)
@@ -56,6 +57,18 @@ def db_create():
     db.session.add_all(sessions)
     db.session.commit()
 
+    exercise_set = [
+        ExerciseSet(
+            exercise_set="1",
+            weight="20",
+            reps="12"
+        )
+    ]
+
+    db.session.add_all(exercise_set)
+    db.session.commit()
+
     print("Users added")
     print("Exercises added")
     print("Sessions added")
+    print("Exercise sets added")

@@ -27,3 +27,6 @@ def invalid_request(err):
 @app.errorhandler(KeyError)
 def missing_key(err):
     return {"error": f"Missing field: {str(err)}"}, 400
+
+# prints all routes
+print(app.url_map)

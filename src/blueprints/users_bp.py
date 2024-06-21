@@ -1,17 +1,23 @@
 from datetime import timedelta
 from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
+# from flask_jwt_extended import jwt_required
 from models.user import User, UserSchema
 from init import db, bcrypt
+from auth import admin_only
+
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
 
 # Get all users (R); Admin only
 @users_bp.route("")
+# Also checks for existing user - using the subject in the token
+@admin_only
 def get_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True).dump(users)
+    
 
 # Register (P); User - Not completed
 @users_bp.route("/register", methods=["POST"])

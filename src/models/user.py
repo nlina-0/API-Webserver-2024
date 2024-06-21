@@ -1,8 +1,8 @@
-from init import db, ma
+from marshmallow import fields
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Boolean
 from typing import List, Optional
-from marshmallow import fields
+from init import db, ma
 
 class User(db.Model):
     __tablename__="users"
@@ -20,4 +20,4 @@ class UserSchema(ma.Schema):
     # Marshmallow validator, ensures that what is entered is an email
     # email = fields.Email(required=True)
     class Meta:
-        fields = ("id", "name", "email", "password")
+        fields = ("id", "name", "email", "password", "is_admin")
