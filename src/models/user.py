@@ -18,6 +18,6 @@ class User(db.Model):
 # Creates user schema with marshmallow; provides serialization needed for converting data into JSON
 class UserSchema(ma.Schema):
     # Marshmallow validator, ensures that what is entered is an email
-    email = fields.Email(required=True)
+    # email = fields.Email(required=True)
     class Meta:
-        fields = ("id", "name", "email")
+        fields = ("id", "name", "email", "password")

@@ -1,6 +1,8 @@
+from datetime import date
 from flask import Blueprint
 from models.user import User
 from models.exercise import Exercise
+from models.session import Session
 from init import db, bcrypt
 
 db_commands = Blueprint('db', __name__)
@@ -40,7 +42,20 @@ def db_create():
     ]
 
     db.session.add_all(exercises)
-
     db.session.commit()
+
+    sessions = [
+        Session(
+            date=date.today()
+        ),
+        Session(
+            date=date.today()
+        )
+    ]
+
+    db.session.add_all(sessions)
+    db.session.commit()
+
     print("Users added")
     print("Exercises added")
+    print("Sessions added")

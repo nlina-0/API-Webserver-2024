@@ -1,6 +1,7 @@
 from datetime import date
 from init import db, ma
 from sqlalchemy.orm import Mapped, mapped_column
+from marshmallow import fields
 
 class Session(db.Model):
     __tablename__="sessions"
@@ -12,3 +13,7 @@ class Session(db.Model):
     # user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     # To establish a bidirectional relationship in one-to-many 
     # user: Mapped["User"] = relationship(back_populates="cards")
+
+class SessionSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "date")
