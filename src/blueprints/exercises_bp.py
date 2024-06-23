@@ -4,6 +4,8 @@ from init import db
 
 exercises_bp = Blueprint("exercises", __name__, url_prefix="/exercises")
 
+# Exercises should only be modified by Admin
+
 # Get all exercises (R); All
 @exercises_bp.route("")
 def all_exercises():

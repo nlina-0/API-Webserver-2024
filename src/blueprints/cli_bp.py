@@ -4,6 +4,7 @@ from models.user import User
 from models.exercise import Exercise
 from models.session import Session
 from models.exercise_set import ExerciseSet
+from models.session_exercise import SessionExercise
 from init import db, bcrypt
 
 db_commands = Blueprint('db', __name__)
@@ -25,6 +26,11 @@ def db_create():
             name="Sam Jane",
             email="jane@mail.com",
             password=bcrypt.generate_password_hash("523456").decode("utf8")
+        ),
+        User(
+            name="Finn Star",
+            email="star@mail.com",
+            password=bcrypt.generate_password_hash("password").decode("utf8")
         )
     ]
 
@@ -33,12 +39,16 @@ def db_create():
 
     exercises = [
         Exercise(
-            exercise="Squat",
+            name="Squat",
             description="Lower body exercise."
         ),
         Exercise(
-            exercise="Deadlift",
+            name="Deadlift",
             description="Full body exercise."
+        ),
+        Exercise(
+            name="Pull up",
+            description="Upper body exercise."
         )
     ]
 
@@ -47,14 +57,36 @@ def db_create():
 
     sessions = [
         Session(
-            date=date.today()
+            date=date.today(),
+            # User instance
+            user=users[1]
         ),
         Session(
-            date=date.today()
+            date=date.today(),
+            user=users[1]
+        ),
+        Session(
+            date=date.today(),
+            user=users[2]
         )
     ]
 
     db.session.add_all(sessions)
+    db.session.commit()
+
+    session_exercise = [
+        # has to be created by user...how?
+        SessionExercise(
+            name="Squat"
+            # have a nested value to show the description
+        ),
+        SessionExercise(
+            name="Deadlift"
+            # have a nested value to show the description
+        )
+    ]
+
+    db.session.add_all(session_exercise)
     db.session.commit()
 
     exercise_set = [
@@ -68,7 +100,4 @@ def db_create():
     db.session.add_all(exercise_set)
     db.session.commit()
 
-    print("Users added")
-    print("Exercises added")
-    print("Sessions added")
-    print("Exercise sets added")
+    print("Users, Exercises, Sessions, Exercise sets and Session exercises added")

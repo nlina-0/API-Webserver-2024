@@ -4,12 +4,14 @@ from blueprints.cli_bp import db_commands
 from blueprints.users_bp import users_bp
 from blueprints.exercises_bp import exercises_bp
 from blueprints.sessions_bp import sessions_bp
+from blueprints.session_exercises_bp import session_exercises_bp
 
 
 app.register_blueprint(db_commands)
 app.register_blueprint(users_bp)
 app.register_blueprint(exercises_bp)
 app.register_blueprint(sessions_bp)
+app.register_blueprint(session_exercises_bp)
 
 # Initial test route
 @app.route("/")
@@ -28,5 +30,5 @@ def invalid_request(err):
 def missing_key(err):
     return {"error": f"Missing field: {str(err)}"}, 400
 
-# prints all routes
+# prints all routes in terminal
 print(app.url_map)

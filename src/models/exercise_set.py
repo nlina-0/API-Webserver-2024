@@ -10,6 +10,7 @@ class ExerciseSet(db.Model):
     exercise_set: Mapped[int]
     weight: Mapped[int]
     reps: Mapped[int]
+    # foreign key: session exercise
 
 class ExerciseSetSchema(ma.Schema):
     class Meta:

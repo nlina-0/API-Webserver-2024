@@ -16,7 +16,8 @@ users_bp = Blueprint("users", __name__, url_prefix="/users")
 def get_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
-    return UserSchema(many=True).dump(users)
+    user_schema = UserSchema(many=True, exclude=["sessions", "password"])
+    return user_schema.dump(users)
     
 
 # Register (P); User - Not completed
