@@ -6,7 +6,7 @@ class ExerciseSet(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     # session_exercise_id (foreign key)
     # Should I add exercise name? 
-    # Is exercise set needed? Can that just be defined by the ID
+    # Is exercise set needed? Can that just be defined by the ID; Exercise set should be unique
     exercise_set: Mapped[int]
     weight: Mapped[int]
     reps: Mapped[int]

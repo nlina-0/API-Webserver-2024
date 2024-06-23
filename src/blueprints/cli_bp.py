@@ -77,12 +77,14 @@ def db_create():
     session_exercise = [
         # has to be created by user...how?
         SessionExercise(
-            name="Squat"
+            name="Squat",
             # have a nested value to show the description
+            session=sessions[0],
         ),
         SessionExercise(
-            name="Deadlift"
+            name="Deadlift",
             # have a nested value to show the description
+            session=sessions[2]
         )
     ]
 
