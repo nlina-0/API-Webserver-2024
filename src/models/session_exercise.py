@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, String
-from init import db, ma
 from marshmallow import fields
+from init import db, ma
+from typing import List
 
 # Is this a many to many table?
 
@@ -19,8 +20,12 @@ class SessionExercise(db.Model):
     session_id: Mapped[int] = mapped_column(ForeignKey("sessions.id"))
     session: Mapped["Session"] = relationship(back_populates="session_exercises")
 
+    # relationship to exercise_set
+    exercise_sets: Mapped[List["ExerciseSet"]] = relationship(back_populates="session_exercise")
+
 class SessionExerciseSchema(ma.Schema):
-    session = fields.Nested("SessionSchema", only=["user", "date", "id"])
+    session = fields.Nested("SessionSchema", only=["id", "user", "date"])
+    exercise_sets = fields.List(fields.Nested("ExerciseSetSchema", exclude=["session_exercise"]))
     class Meta:
         # Still need to add session id
-        fields = ("name", "session")
+        fields = ("name", "session", "exercise_sets")

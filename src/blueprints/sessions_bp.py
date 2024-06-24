@@ -7,7 +7,7 @@ from init import db
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 
-# Get all session (R): Admin only
+# Get all session based on nanme?? (R): Admin only
 @sessions_bp.route("")
 # If logged in as user, user can can only access own sessions
 @jwt_required()
@@ -15,6 +15,21 @@ def get_sessions():
     stmt = db.select(Session)
     sessions = db.session.scalars(stmt).all()
     return SessionSchema(many=True).dump(sessions)
+
+
+# # NOT WORKING
+# # Get all session based on nanme?? (R): Admin only
+# @sessions_bp.route("/<string:user>")
+# # If logged in as user, user can can only access own sessions
+# @jwt_required()
+# def get_sessions_by_name(user):
+#     sessions = db.get_or_404(Session, user)
+#     return SessionSchema().dump(sessions)
+
+
+
+
+
 
 # Get user sessions (R): User
 
@@ -27,6 +42,9 @@ def get_exercise_sets():
     stmt = db.select(ExerciseSet)
     exercise_set = db.session.scalars(stmt).all()
     return ExerciseSetSchema(many=True).dump(exercise_set)
+
+
+# Get all exercise set by session id (R)
 
 
 # Create session exercise sets (C)

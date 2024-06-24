@@ -1,5 +1,7 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey
 from init import db, ma
+from marshmallow import fields
 
 class ExerciseSet(db.Model):
     __tablename__="exercise_sets"
@@ -10,8 +12,13 @@ class ExerciseSet(db.Model):
     exercise_set: Mapped[int]
     weight: Mapped[int]
     reps: Mapped[int]
+
     # foreign key: session exercise
+    session_exercise_id: Mapped[int] = mapped_column(ForeignKey("session_exercises.id"))
+    session_exercise: Mapped["SessionExercise"] = relationship(back_populates="exercise_sets")
 
 class ExerciseSetSchema(ma.Schema):
+    session_exercise = fields.Nested("SessionExerciseSchema", only=["name", "session"])
+    
     class Meta:
-        fields = ("id", "exercise_set", "weight", "reps")
+        fields = ("exercise_set", "weight", "reps", "session_exercise")

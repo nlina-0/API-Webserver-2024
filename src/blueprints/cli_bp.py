@@ -62,11 +62,7 @@ def db_create():
             user=users[1]
         ),
         Session(
-            date=date.today(),
-            user=users[1]
-        ),
-        Session(
-            date=date.today(),
+            date="2024-06-22",
             user=users[2]
         )
     ]
@@ -84,7 +80,12 @@ def db_create():
         SessionExercise(
             name="Deadlift",
             # have a nested value to show the description
-            session=sessions[2]
+            session=sessions[1]
+        ),
+        SessionExercise(
+            name="Deadlift",
+            # have a nested value to show the description
+            session=sessions[0]
         )
     ]
 
@@ -95,7 +96,20 @@ def db_create():
         ExerciseSet(
             exercise_set="1",
             weight="20",
-            reps="12"
+            reps="12",
+            session_exercise=session_exercise[0]
+        ),
+        ExerciseSet(
+            exercise_set="1",
+            weight="20",
+            reps="12",
+            session_exercise=session_exercise[2]
+        ),
+        ExerciseSet(
+            exercise_set="2",
+            weight="40",
+            reps="8",
+            session_exercise=session_exercise[2]
         )
     ]
 
