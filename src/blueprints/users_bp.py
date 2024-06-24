@@ -24,8 +24,9 @@ def get_users():
 # @users_bp.route("/register", methods=["POST"])
 # def create_user():
 #     # Load through marshmallow scehma (de-serializes json, gives us dict) is used to run the incoming request through the user schema
-#     params = UserSchema(only=["name", "email"]).load(request.json)
+#     params = UserSchema(only=["name", "email", "password"]).load(request.json)
 #     return params
+
 
 # Login (P); All
 @users_bp.route("/login", methods=["POST"])

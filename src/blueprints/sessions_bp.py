@@ -1,15 +1,15 @@
 from datetime import date
-from flask import Blueprint, request
+from flask import Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.session import Session, SessionSchema
 from models.user import User
-# from models.session_set import SessionSet, SessionSetSchema
 from init import db
 
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 
-# Get all sessions (R)
+# Get all sessions (R): 
+# Users should only be allowed to see their own sessions, unless admin (maybe create separate one for admin?)
 @sessions_bp.route("")
 @jwt_required()
 def get_sessions():
@@ -19,8 +19,10 @@ def get_sessions():
     return session_schema.dump(sessions)
 
 
-# Get session by ID (R)
+# Get session by ID (R): 
+# User should only be allowed to select their own sessions, otherwise an error should occur
 @sessions_bp.route("/<int:session_id>")
+@jwt_required()
 def get_session_by_id(session_id):
     session = db.get_or_404(Session, session_id)
     return SessionSchema().dump(session)
@@ -43,7 +45,8 @@ def create_session():
     return SessionSchema().dump(session), 201
 
 
-# Delete session (D)
+# Delete session (D):
+# User should only be allowed to delete their own session
 @sessions_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_session(id):
