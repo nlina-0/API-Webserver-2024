@@ -1,7 +1,7 @@
 from flask import Blueprint, request
+from flask_jwt_extended import jwt_required
 from models.session import Session
 from models.session_set import SessionSet, SessionSetSchema
-from flask_jwt_extended import jwt_required
 from init import db
 
 session_sets_bp = Blueprint("session_sets", __name__, url_prefix="/session-sets")
@@ -14,7 +14,7 @@ def get_session_sets_by_id(id):
     return session_set_schema.dump(session_set)
 
 
-# Create session set (C) ---> working on it
+# Create session set (C)
 @session_sets_bp.route("/", methods=["POST"])
 @jwt_required()
 def create_session_set():
@@ -35,13 +35,9 @@ def create_session_set():
     return SessionSetSchema().dump(session_set)
 
 
-# request args?
+# Update session set (U)
 
 
-# # Get session set by exercise name (R): NOT NEEDED
-# @session_sets_bp.route("<string:exercise>")
-# def get_session_set_by_exercise(exercise):
-#     upper_exercise = exercise.capitalize()
-#     stmt = db.select(SessionSet).where(SessionSet.exercise_name == upper_exercise)
-#     session_set = db.session.scalars(stmt).all()
-#     return SessionSetSchema(many=True).dump(session_set)
+# Delete session set (D)
+
+

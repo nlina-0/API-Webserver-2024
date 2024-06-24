@@ -4,7 +4,7 @@ from init import db
 
 exercises_bp = Blueprint("exercises", __name__, url_prefix="/exercises")
 
-# Only admin can edit
+# Only admin can create, update and delete
 
 # Get all exercises (R); All
 @exercises_bp.route("")
@@ -18,6 +18,7 @@ def all_exercises():
 def one_exercise(id):
     exercise = db.get_or_404(Exercise, id)
     return ExerciseSchema().dump(exercise)
+
 
 # Create exercise (C); Admin only
 
