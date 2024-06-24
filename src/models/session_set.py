@@ -30,5 +30,4 @@ class SessionSet(db.Model):
 class SessionSetSchema(ma.Schema):
     session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
     class Meta:
-        # Still need to add session id
         fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session")

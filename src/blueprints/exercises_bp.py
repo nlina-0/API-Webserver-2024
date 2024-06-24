@@ -21,6 +21,8 @@ def one_exercise(id):
 
 # Create exercise (C); Admin only
 
+
 # Edit exercise (U); Admin only
+
 
 # Delete exercise (D); Admin only

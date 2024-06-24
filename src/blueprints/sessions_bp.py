@@ -1,13 +1,14 @@
+from datetime import date
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.session import Session, SessionSchema
-from models.session_set import SessionSet, SessionSetSchema
+# from models.session_set import SessionSet, SessionSetSchema
 from init import db
 
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 
-# Get all session based on nanme?? (R): Admin only
+# Get all session (R): User and Admin only
 @sessions_bp.route("")
 # If logged in as user, user can can only access own sessions
 @jwt_required()
@@ -25,6 +26,18 @@ def get_session_by_id(session_id):
     return SessionSchema().dump(session)
 
 
+# Create session (C) ---> working on it
+@sessions_bp.route("/", methods=["POST"])
+@jwt_required()
+def create_session():
+    session = Session(
+        date=date.today(),
+        user=get_jwt_identity
+    )
+
+    db.session.add(session)
+    db.session.commit()
+    return SessionSchema().dump(session), 201
 
 
 # # NOT WORKING
@@ -37,42 +50,14 @@ def get_session_by_id(session_id):
 #     return SessionSchema().dump(sessions)
 
 
-
-
-
-
 # Get user sessions (R): User
 
-
-# Get all session set (R)
-@sessions_bp.route("/session_set")
-# If logged in as user, user can can only access own sessions
-@jwt_required()
-def get_session_sets():
-    stmt = db.select(SessionSet)
-    session_set = db.session.scalars(stmt).all()
-    return SessionSetSchema(many=True).dump(session_set)
 
 
 # Get all exercise set by session id (R)
 
 
-# # Create session exercise sets (C)
-# @sessions_bp.route("/", methods=["POST"])
-# # Only users and admins can use this function
-# # @jwt_required
-# def create_exercise_set():
-#     # How would I link this exercise_set model (set info for each exercise performed) to the session model (id, date)?
-#     session_info = ExerciseSetSchema(only=["exercise_set", "weight", "reps"], unknown="exclude").load(request.json)
-#     session = ExerciseSet(
-#         exercise_set=session_info["exercise_set"],
-#         weight=session_info["weight"],
-#         reps=session_info["reps"]
-#         # user_id=get_jw_identity (this model is not linked to user though...If using this remember to import)
-#     )
-#     db.session.add(session)
-#     db.session.commit()
-#     return ExerciseSetSchema().dump(session), 201
+
 
 
 # # Update an existing exercise set (U)
