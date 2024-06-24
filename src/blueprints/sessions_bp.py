@@ -2,6 +2,7 @@ from datetime import date
 from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.session import Session, SessionSchema
+from models.user import User
 # from models.session_set import SessionSet, SessionSetSchema
 from init import db
 
@@ -26,18 +27,27 @@ def get_session_by_id(session_id):
     return SessionSchema().dump(session)
 
 
-# Create session (C) ---> working on it
+# Create session (C)
 @sessions_bp.route("/", methods=["POST"])
 @jwt_required()
 def create_session():
+    user_id = get_jwt_identity()
+    user = db.get_or_404(User, user_id)
+
     session = Session(
         date=date.today(),
-        user=get_jwt_identity
+        user=user
     )
 
     db.session.add(session)
     db.session.commit()
     return SessionSchema().dump(session), 201
+
+
+# Update session (U)
+
+
+
 
 
 # # NOT WORKING
