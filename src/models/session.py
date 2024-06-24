@@ -15,10 +15,10 @@ class Session(db.Model):
     # To establish a bidirectional relationship in one-to-many 
     user: Mapped["User"] = relationship(back_populates="sessions")
 
-    session_exercises: Mapped[List["SessionExercise"]] = relationship(back_populates="session")
+    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="session")
 
 class SessionSchema(ma.Schema):
     user = fields.Nested("UserSchema", only=["name"])
-    session_exercises = fields.List(fields.Nested("SessionExerciseSchema", only=["name"]))
+    session_sets = fields.List(fields.Nested("SessionSetSchema", only=["id"]))
     class Meta:
         fields = ("id", "date", "user")

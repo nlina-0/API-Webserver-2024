@@ -3,8 +3,7 @@ from flask import Blueprint
 from models.user import User
 from models.exercise import Exercise
 from models.session import Session
-from models.exercise_set import ExerciseSet
-from models.session_exercise import SessionExercise
+from models.session_set import SessionSet
 from init import db, bcrypt
 
 db_commands = Blueprint('db', __name__)
@@ -70,50 +69,35 @@ def db_create():
     db.session.add_all(sessions)
     db.session.commit()
 
-    session_exercise = [
+    session_set = [
         # has to be created by user...how?
-        SessionExercise(
-            name="Squat",
+        SessionSet(
+            exercise_name="Squat",
             # have a nested value to show the description
             session=sessions[0],
-        ),
-        SessionExercise(
-            name="Deadlift",
-            # have a nested value to show the description
-            session=sessions[1]
-        ),
-        SessionExercise(
-            name="Deadlift",
-            # have a nested value to show the description
-            session=sessions[0]
-        )
-    ]
-
-    db.session.add_all(session_exercise)
-    db.session.commit()
-
-    exercise_set = [
-        ExerciseSet(
             exercise_set="1",
-            weight="20",
-            reps="12",
-            session_exercise=session_exercise[0]
-        ),
-        ExerciseSet(
-            exercise_set="1",
-            weight="20",
-            reps="12",
-            session_exercise=session_exercise[2]
-        ),
-        ExerciseSet(
-            exercise_set="2",
             weight="40",
-            reps="8",
-            session_exercise=session_exercise[2]
+            reps="10"
+        ),
+        SessionSet(
+            exercise_name="Squat",
+            # have a nested value to show the description
+            session=sessions[1],
+            exercise_set="1",
+            weight="40",
+            reps="10"
+        ),
+        SessionSet(
+            exercise_name="Deadlift",
+            # have a nested value to show the description
+            session=sessions[0],
+            exercise_set="1",
+            weight="40",
+            reps="10"
         )
     ]
 
-    db.session.add_all(exercise_set)
+    db.session.add_all(session_set)
     db.session.commit()
 
     print("Users, Exercises, Sessions, Exercise sets and Session exercises added")

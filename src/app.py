@@ -4,14 +4,14 @@ from blueprints.cli_bp import db_commands
 from blueprints.users_bp import users_bp
 from blueprints.exercises_bp import exercises_bp
 from blueprints.sessions_bp import sessions_bp
-from blueprints.session_exercises_bp import session_exercises_bp
+from blueprints.session_sets_bp import session_sets_bp
 
 
 app.register_blueprint(db_commands)
 app.register_blueprint(users_bp)
 app.register_blueprint(exercises_bp)
 app.register_blueprint(sessions_bp)
-app.register_blueprint(session_exercises_bp)
+app.register_blueprint(session_sets_bp)
 
 # Initial test route
 @app.route("/")

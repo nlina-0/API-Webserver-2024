@@ -2,14 +2,20 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, String
 from marshmallow import fields
 from init import db, ma
-from typing import List
+# from typing import List
 
 # Is this a many to many table?
 
-class SessionExercise(db.Model):
-    __tablename__="session_exercises"
+class SessionSet(db.Model):
+    __tablename__="session_sets"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
+    
+    # Turn into foreign key
+    exercise_name: Mapped[str] = mapped_column(String(200))
+    exercise_set: Mapped[int]
+    weight: Mapped[int]
+    reps: Mapped[int]
+
 
     # Link relationship between Session_Exercises to Exercises
     # foreign key: exercise (Id and exercise)
@@ -18,14 +24,11 @@ class SessionExercise(db.Model):
 
     # foreign key: session
     session_id: Mapped[int] = mapped_column(ForeignKey("sessions.id"))
-    session: Mapped["Session"] = relationship(back_populates="session_exercises")
+    session: Mapped["Session"] = relationship(back_populates="session_sets")
 
-    # relationship to exercise_set
-    exercise_sets: Mapped[List["ExerciseSet"]] = relationship(back_populates="session_exercise")
 
-class SessionExerciseSchema(ma.Schema):
+class SessionSetSchema(ma.Schema):
     session = fields.Nested("SessionSchema", only=["id", "user", "date"])
-    exercise_sets = fields.List(fields.Nested("ExerciseSetSchema", exclude=["session_exercise"]))
     class Meta:
         # Still need to add session id
-        fields = ("name", "session", "exercise_sets")
+        fields = ("exercise_name", "session", "exercise_set", "weight", "reps")
