@@ -7,7 +7,7 @@ from marshmallow import fields
 
 class Session(db.Model):
     __tablename__="sessions"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    session_id: Mapped[int] = mapped_column(primary_key=True)
     date: Mapped[date]
 
     # Foreign key is implicitly not null
@@ -19,6 +19,6 @@ class Session(db.Model):
 
 class SessionSchema(ma.Schema):
     user = fields.Nested("UserSchema", only=["name"])
-    session_sets = fields.List(fields.Nested("SessionSetSchema", only=["id"]))
+    session_sets = fields.List(fields.Nested("SessionSetSchema", only=["exercise_name", "exercise_set", "id"]))
     class Meta:
-        fields = ("id", "date", "user")
+        fields = ("session_id", "date", "user", "session_sets")

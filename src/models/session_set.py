@@ -23,12 +23,12 @@ class SessionSet(db.Model):
     # exercise: Mapped["Exercise"] = relationship(back_populates="session_exercises")
 
     # foreign key: session
-    session_id: Mapped[int] = mapped_column(ForeignKey("sessions.id"))
+    session_id: Mapped[int] = mapped_column(ForeignKey("sessions.session_id"))
     session: Mapped["Session"] = relationship(back_populates="session_sets")
 
 
 class SessionSetSchema(ma.Schema):
-    session = fields.Nested("SessionSchema", only=["id", "user", "date"])
+    session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
     class Meta:
         # Still need to add session id
-        fields = ("exercise_name", "session", "exercise_set", "weight", "reps")
+        fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session")

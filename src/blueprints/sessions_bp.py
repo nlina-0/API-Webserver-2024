@@ -14,7 +14,17 @@ sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 def get_sessions():
     stmt = db.select(Session)
     sessions = db.session.scalars(stmt).all()
-    return SessionSchema(many=True).dump(sessions)
+    session_schema = SessionSchema(many=True, exclude=["session_sets"])
+    return session_schema.dump(sessions)
+
+
+# Get session by ID (R); Only user who owns it can access and admin
+@sessions_bp.route("/<int:session_id>")
+def get_session_by_id(session_id):
+    session = db.get_or_404(Session, session_id)
+    return SessionSchema().dump(session)
+
+
 
 
 # # NOT WORKING
