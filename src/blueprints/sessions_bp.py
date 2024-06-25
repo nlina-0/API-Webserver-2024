@@ -54,3 +54,7 @@ def delete_session(id):
     db.session.delete(session)
     db.session.commit()
     return {}
+
+
+# Update session (U):
+# If admin creates session, admin should be able to update session user?
