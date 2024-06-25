@@ -77,28 +77,32 @@ def db_create():
             session=sessions[0],
             exercise_set="1",
             weight="40",
-            reps="10"
+            reps="10",
+            user=users[1]
         ),
         SessionSet(
             exercise_name="Squat",
             session=sessions[0],
             exercise_set="2",
             weight="60",
-            reps="8"
+            reps="8",
+            user=users[1]
         ),
         SessionSet(
             exercise_name="Squat",
             session=sessions[1],
             exercise_set="1",
             weight="40",
-            reps="10"
+            reps="10",
+            user=users[2]
         ),
         SessionSet(
             exercise_name="Deadlift",
             session=sessions[0],
             exercise_set="1",
             weight="40",
-            reps="10"
+            reps="10",
+            user=users[1]
         )
     ]
 

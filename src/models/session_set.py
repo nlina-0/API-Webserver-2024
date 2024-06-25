@@ -22,12 +22,19 @@ class SessionSet(db.Model):
     # exercise_id: Mapped[int] = mapped_column(ForeignKey("exercises.id", ondelete="CASCADE"))
     # exercise: Mapped["Exercise"] = relationship(back_populates="session_exercises")
 
+
     # foreign key: session
     session_id: Mapped[int] = mapped_column(ForeignKey("sessions.session_id"))
     session: Mapped["Session"] = relationship(back_populates="session_sets")
 
 
+    # foreign key: user_id 
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship(back_populates="session_sets")
+
 class SessionSetSchema(ma.Schema):
-    session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
+    # session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
+    session = fields.Nested("SessionSchema", only=["session_id", "date"])
+    user = fields.Nested("UserSchema", only=["id", "name"])
     class Meta:
-        fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session")
+        fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session", "user")

@@ -14,12 +14,14 @@ class User(db.Model):
 
     # Adding bidrectional association to session model
     sessions: Mapped[List["Session"]] = relationship(back_populates="user")
+    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user")
 
 # Creates user schema with marshmallow; provides serialization needed for converting data into JSON
 class UserSchema(ma.Schema):
     # Marshmallow validator, ensures that what is entered is an email
     # email = fields.Email(required=True)
     sessions = fields.List(fields.Nested("SessionSchema", exclude=["user"]))
+    # session_sets = fields.List(fields.Nested("SessionSetSchema", exclude=["user", "session"]))
 
     class Meta:
         fields = ("id", "name", "email", "password", "is_admin", "sessions")

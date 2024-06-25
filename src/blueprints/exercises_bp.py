@@ -27,3 +27,6 @@ def one_exercise(id):
 
 
 # Delete exercise (D); Admin only
+
+
+# Get list of user exercises (R) ??

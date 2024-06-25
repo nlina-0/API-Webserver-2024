@@ -18,7 +18,7 @@ class Session(db.Model):
     session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="session", cascade="all, delete")
 
 class SessionSchema(ma.Schema):
-    user = fields.Nested("UserSchema", only=["name"])
-    session_sets = fields.List(fields.Nested("SessionSetSchema", only=["exercise_name", "exercise_set", "id"]))
+    user = fields.Nested("UserSchema", only=["id", "name"])
+    session_sets = fields.List(fields.Nested("SessionSetSchema", only=[ "id", "exercise_name", "exercise_set", "weight", "reps"]))
     class Meta:
         fields = ("session_id", "date", "user", "session_sets")

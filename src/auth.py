@@ -19,7 +19,7 @@ def admin_only(fn):
 
 
 # Ensure that the JWT user is the owner of the given Card
-def authorize_owner(session):
+def authorize_owner(obj):
     user_id = get_jwt_identity()
-    if user_id != session.user_id:
+    if user_id != obj.user_id:
         abort(make_response(jsonify(error="You must be the card owner to access this resource"), 403))
