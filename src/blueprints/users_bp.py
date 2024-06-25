@@ -10,7 +10,6 @@ users_bp = Blueprint("users", __name__, url_prefix="/users")
 
 # Get all users (R); Admin only
 @users_bp.route("")
-# Also checks for existing user - using the subject in the token
 @jwt_required()
 @admin_only
 def get_users():
@@ -20,7 +19,7 @@ def get_users():
     return user_schema.dump(users)
     
 
-# Register (P); User can create account
+# Register (C); User can create account
 @users_bp.route("/register", methods=["POST"])
 def create_user():
     params = UserSchema(only=["name", "email", "password"], unknown="exclude").load(request.json)
@@ -28,7 +27,7 @@ def create_user():
     user = User(
         email=params["email"],
         name=params["name"],
-        password=params["password"],
+        password=bcrypt.generate_password_hash(params["password"]).decode("utf8"),
         is_admin=False
     )
 
@@ -39,7 +38,7 @@ def create_user():
     return user_schema.dump(user), 201
 
 
-# Login (P); All
+# Login (C); All
 @users_bp.route("/login", methods=["POST"])
 def login():
     # unknown=exclude will exclude any invalid fields
@@ -55,3 +54,9 @@ def login():
         return {"token": token}
     else:
         return {"error": "Invalid email or password"}, 401
+    
+
+# Update account (U)
+
+
+# Delete account (D): Admin only

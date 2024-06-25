@@ -15,7 +15,7 @@ class Session(db.Model):
     # To establish a bidirectional relationship in one-to-many 
     user: Mapped["User"] = relationship(back_populates="sessions")
 
-    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="session")
+    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="session", cascade="all, delete")
 
 class SessionSchema(ma.Schema):
     user = fields.Nested("UserSchema", only=["name"])

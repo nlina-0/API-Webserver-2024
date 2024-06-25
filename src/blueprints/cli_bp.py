@@ -81,7 +81,6 @@ def db_create():
         ),
         SessionSet(
             exercise_name="Squat",
-            # have a nested value to show the description
             session=sessions[0],
             exercise_set="2",
             weight="60",
@@ -89,7 +88,6 @@ def db_create():
         ),
         SessionSet(
             exercise_name="Squat",
-            # have a nested value to show the description
             session=sessions[1],
             exercise_set="1",
             weight="40",
@@ -97,7 +95,6 @@ def db_create():
         ),
         SessionSet(
             exercise_name="Deadlift",
-            # have a nested value to show the description
             session=sessions[0],
             exercise_set="1",
             weight="40",

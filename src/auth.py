@@ -1,6 +1,7 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from init import db
 from models.user import User
+from flask import abort, jsonify, make_response
 
 # Route decorator - ensure JWT user is an admin
 def admin_only(fn):
@@ -17,4 +18,8 @@ def admin_only(fn):
     return inner
 
 
-# Ensure the JWT user is the owner of the session
+# Ensure that the JWT user is the owner of the given Card
+def authorize_owner(session):
+    user_id = get_jwt_identity()
+    if user_id != session.user_id:
+        abort(make_response(jsonify(error="You must be the card owner to access this resource"), 403))
