@@ -39,7 +39,8 @@ def create_session_set():
 @session_sets_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 def update_session_set(id):
     session_set = db.get_or_404(SessionSet, id)
-    session_set_info = SessionSetSchema(only=["exercise_name", "exercise_set", "weight", "reps"], unknown="exclude").load(request.json)
+    session_set_info = SessionSetSchema(only=["id", "exercise_name", "exercise_set", "weight", "reps"], unknown="exclude").load(request.json)
+    session_set.id = session_set_info.get("id", session_set.id) # Has to be an existing session though
     session_set.exercise_name = session_set_info.get("exercise_name", session_set.exercise_name)
     session_set.exercise_set = session_set_info.get("exercise_set", session_set.exercise_set)
     session_set.weight = session_set_info.get("weight", session_set.weight)

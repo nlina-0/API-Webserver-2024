@@ -57,4 +57,4 @@ def delete_session(id):
 
 
 # Update session (U):
-# If admin creates session, admin should be able to update session user?
+# If admin creates session, admin should be able to update session user? Admin can only update to existing user

@@ -1,7 +1,6 @@
 from datetime import timedelta
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token
-# from flask_jwt_extended import jwt_required
+from flask_jwt_extended import create_access_token, jwt_required
 from models.user import User, UserSchema
 from init import db, bcrypt
 from auth import admin_only
@@ -12,6 +11,7 @@ users_bp = Blueprint("users", __name__, url_prefix="/users")
 # Get all users (R); Admin only
 @users_bp.route("")
 # Also checks for existing user - using the subject in the token
+@jwt_required()
 @admin_only
 def get_users():
     stmt = db.select(User)
@@ -20,12 +20,23 @@ def get_users():
     return user_schema.dump(users)
     
 
-# # Register (P); User - Not completed
-# @users_bp.route("/register", methods=["POST"])
-# def create_user():
-#     # Load through marshmallow scehma (de-serializes json, gives us dict) is used to run the incoming request through the user schema
-#     params = UserSchema(only=["name", "email", "password"]).load(request.json)
-#     return params
+# Register (P); User can create account
+@users_bp.route("/register", methods=["POST"])
+def create_user():
+    params = UserSchema(only=["name", "email", "password"], unknown="exclude").load(request.json)
+
+    user = User(
+        email=params["email"],
+        name=params["name"],
+        password=params["password"],
+        is_admin=False
+    )
+
+    db.session.add(user)
+    db.session.commit()
+
+    user_schema = UserSchema(exclude=["sessions"])
+    return user_schema.dump(user), 201
 
 
 # Login (P); All
