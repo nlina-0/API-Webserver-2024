@@ -17,11 +17,11 @@ def get_session_sets_by_id(id):
     return SessionSetSchema().dump(session_set)  
     
 
-# Create session set (C): User can only create session_set in session they own
+# Create session set (C)
 @session_sets_bp.route("/", methods=["POST"])
 @jwt_required()
 def create_session_set():
-    # Get the latest Session_ID, session sets should only be created after creating a session.
+    # Get the latest Session_ID, session_sets should only be created after creating a session.
     session = db.session.query(Session).order_by(Session.session_id.desc()).first()
     latest_session_id = session.session_id
 
@@ -42,10 +42,13 @@ def create_session_set():
     return SessionSetSchema().dump(session_set), 201
 
 
-# Update session set (U)
+# Update session set (U): User must be the owner of session_set
 @session_sets_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+@jwt_required()
 def update_session_set(id):
     session_set = db.get_or_404(SessionSet, id)
+    authorize_owner(session_set)
+
     session_set_info = SessionSetSchema(only=["id", "exercise_name", "exercise_set", "weight", "reps"], unknown="exclude").load(request.json)
 
     session_set.id = session_set_info.get("id", session_set.id) # Has to be an existing session though
@@ -60,8 +63,10 @@ def update_session_set(id):
 
 # Delete session set (D)
 @session_sets_bp.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_session(id):
     session_set = db.get_or_404(SessionSet, id)
+    authorize_owner(session_set)
     db.session.delete(session_set)
     db.session.commit()
     return {}
