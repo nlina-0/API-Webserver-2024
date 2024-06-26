@@ -8,9 +8,7 @@ from typing import List
 
 class Exercise(db.Model):
     __tablename__="exercises"
-    # Can I make the exercise name the primary key?
     id: Mapped[int] = mapped_column(primary_key=True)
-    # Make this primary key??
     name: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(Text())
 

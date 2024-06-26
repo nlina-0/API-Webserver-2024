@@ -12,7 +12,7 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(String(200))
     is_admin: Mapped[bool] = mapped_column(Boolean(), server_default="false")
 
-    # Adding bidrectional association to session model
+    # Bidrectional associations
     sessions: Mapped[List["Session"]] = relationship(back_populates="user")
     session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user")
 
