@@ -1,4 +1,5 @@
 from flask import Blueprint, request, abort
+from flask_jwt_extended import jwt_required
 from models.exercise import Exercise, ExerciseSchema
 from init import db
 from auth import admin_only
@@ -27,7 +28,6 @@ def one_exercise(id):
 @admin_only
 def create_exercise():
     new_exercise = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
-    
     exercise = Exercise(
         exercise=new_exercise["exercise"],
         description=new_exercise["description"]
@@ -38,6 +38,8 @@ def create_exercise():
 
 
 # Update exercise (U); Admin only
+# @admin_only
+# @jwt_required()
 @exercises_bp.route("/<int:id>", methods=["PUT", "POST"])
 def update_exercise(id):
     stmt = db.select(Exercise).filter_by(exercise_id=id)
@@ -46,7 +48,6 @@ def update_exercise(id):
         abort(404)
 
     exercise_update = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
-
     exercises.exercise = exercise_update.get("exercise", exercises.exercise)
     exercises.description = exercise_update.get("description", exercises.description)
 
@@ -56,7 +57,14 @@ def update_exercise(id):
 
 
 # Delete exercise (D); Admin only
+@exercises_bp.route("/<int:id>", methods=["DELETE"])
+def delete_exercise(id):
+    stmt = db.select(Exercise).filter_by(exercise_id=id)
+    exercise = db.session.scalar(stmt)
+    if not exercise:
+        abort(404)
+    
+    db.session.delete(exercise)
+    db.session.commit()
+    return {}
 
-
-
-# Get list of user exercises (R)
