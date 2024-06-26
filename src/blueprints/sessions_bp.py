@@ -38,6 +38,7 @@ def get_user_sessions():
 @jwt_required()
 def get_session_by_id(session_id):
     session = db.get_or_404(Session, session_id)
+    # Create more specific validation point?
     authorize_owner(session)
     session_schema = SessionSchema(exclude=["user"])
     return session_schema.dump(session)
@@ -73,3 +74,18 @@ def delete_session(id):
 
 # Update session (U):
 # If admin creates session, admin should be able to update session user? Admin can only update to existing user
+
+
+# From sessions I want to query:
+# Session_id to retrieve only
+
+# session.session_id == session_set.session.id
+
+# session_set.exerise_set
+# session_set.reps
+# session_set.weight
+# exercise name from exercise.exercise_name == session_set.exercise_id
+
+
+#  FROM SESSION SET
+# db.session.query(Session, Exercise, Session_set).filter(Session.session_id == Session_set.id)

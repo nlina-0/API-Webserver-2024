@@ -39,15 +39,15 @@ def db_create():
     exercises = [
         Exercise(
             exercise="Squat",
-            description="Lower body exercise."
+            description="A compound, full-body exercise that primarily targets the muscles of the thighs, hips, and buttocks, as well as strengthening the bones, ligaments, and insertion of the tendons throughout the lower body."
         ),
         Exercise(
             exercise="Deadlift",
-            description="Full body exercise."
+            description="A strength training exercise in which a person lifts a loaded barbell or bar off the ground from a stabilized, bent-over position."
         ),
         Exercise(
             exercise="Pull up",
-            description="Upper body exercise."
+            description="A strength training exercise that targets the upper body, specifically the muscles of the back, shoulders, and arms."
         )
     ]
 
@@ -72,37 +72,41 @@ def db_create():
     session_set = [
         # has to be created by user...how?
         SessionSet(
-            exercise_name="Squat",
+            # exercise_name="Squat",
             # have a nested value to show the description
             session=sessions[0],
             exercise_set="1",
             weight="40",
             reps="10",
-            user=users[1]
+            user=users[1],
+            exercise=exercises[0]
         ),
         SessionSet(
-            exercise_name="Squat",
+            # exercise_name="Squat",
             session=sessions[0],
             exercise_set="2",
             weight="60",
             reps="8",
-            user=users[1]
+            user=users[1],
+            exercise=exercises[0]
         ),
         SessionSet(
-            exercise_name="Squat",
+            # exercise_name="Squat",
             session=sessions[1],
             exercise_set="1",
             weight="40",
             reps="10",
-            user=users[2]
+            user=users[2],
+            exercise=exercises[0]
         ),
         SessionSet(
-            exercise_name="Deadlift",
+            # exercise_name="Deadlift",
             session=sessions[0],
             exercise_set="1",
             weight="40",
             reps="10",
-            user=users[1]
+            user=users[1],
+            exercise=exercises[1]
         )
     ]
 

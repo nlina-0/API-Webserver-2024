@@ -19,6 +19,6 @@ class Session(db.Model):
 
 class SessionSchema(ma.Schema):
     user = fields.Nested("UserSchema", only=["id", "name"])
-    session_sets = fields.List(fields.Nested("SessionSetSchema", only=[ "id", "exercise_name", "exercise_set", "weight", "reps"]))
+    session_sets = fields.List(fields.Nested("SessionSetSchema", only=[ "id", "exercise", "exercise_set", "weight", "reps"]))
     class Meta:
         fields = ("session_id", "date", "user", "session_sets")

@@ -13,6 +13,7 @@ class Exercise(db.Model):
     description: Mapped[str] = mapped_column(Text())
 
     # exercises: Mapped[List["SessionExercise"]] = relationship(back_populates="exercise", cascade='all, delete-orphan')
+    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="exercise")
 
 class ExerciseSchema(ma.Schema):
     class Meta:
