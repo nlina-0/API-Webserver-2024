@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
 from models.exercise import Exercise, ExerciseSchema
 from init import db
 from auth import admin_only
@@ -37,17 +37,21 @@ def create_exercise():
     return ExerciseSchema().dump(exercise), 201
 
 
-# Edit exercise (U); Admin only
+# Update exercise (U); Admin only
 @exercises_bp.route("/<int:id>", methods=["PUT", "POST"])
-@app.cli.command("update_exercise") # For testing
 def update_exercise(id):
-    # exercise = db.get_or_404(Exercise, id)
-
-    exercise_info = db.select(Exercise).where(Exercise.exercise_id == id)
+    stmt = db.select(Exercise).filter_by(exercise_id=id)
+    exercises = db.session.scalar(stmt)
+    if not exercises:
+        abort(404)
 
     exercise_update = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
-    exercise_info.exercise = exercise_update.get("exercise_name", exercise_info.exercise)
-    exercise_info.exercise
+
+    exercises.exercise = exercise_update.get("exercise", exercises.exercise)
+    exercises.description = exercise_update.get("description", exercises.description)
+
+    db.session.commit()
+    return ExerciseSchema().dump(exercises), 201
 
 
 
