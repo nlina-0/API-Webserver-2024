@@ -8,12 +8,12 @@ from typing import List
 
 class Exercise(db.Model):
     __tablename__="exercises"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
+    exercise_id: Mapped[int] = mapped_column(primary_key=True)
+    exercise: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(Text())
 
     # exercises: Mapped[List["SessionExercise"]] = relationship(back_populates="exercise", cascade='all, delete-orphan')
 
 class ExerciseSchema(ma.Schema):
     class Meta:
-        fields = ("id", "name", "description")
+        fields = ("exercise_id", "exercise", "description")

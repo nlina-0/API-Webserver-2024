@@ -38,15 +38,15 @@ def db_create():
 
     exercises = [
         Exercise(
-            name="Squat",
+            exercise="Squat",
             description="Lower body exercise."
         ),
         Exercise(
-            name="Deadlift",
+            exercise="Deadlift",
             description="Full body exercise."
         ),
         Exercise(
-            name="Pull up",
+            exercise="Pull up",
             description="Upper body exercise."
         )
     ]
@@ -109,4 +109,7 @@ def db_create():
     db.session.add_all(session_set)
     db.session.commit()
 
-    print("Users, Exercises, Sessions, Exercise sets and Session exercises added")
+    print("Users added")
+    print("Exercises added")
+    print("Sessions added")
+    print("Session sets added")
