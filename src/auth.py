@@ -18,8 +18,13 @@ def admin_only(fn):
     return inner
 
 
-# Ensure that the JWT user is the owner of the given Card
+# Ensure that the JWT user is the owner of instance
+# Allow admin to bypass
 def authorize_owner(obj):
     user_id = get_jwt_identity()
-    if user_id != obj.user_id:
+    
+    user = db.get_or_404(User, user_id)
+    user_admin = user.is_admin
+
+    if user_id != obj.user_id and not user_admin:
         abort(make_response(jsonify(error="You must be the card owner to access this resource"), 403))

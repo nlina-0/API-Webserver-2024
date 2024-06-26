@@ -6,7 +6,7 @@ from models.user import User
 from init import db
 from auth import admin_only, authorize_owner
 
-
+# Admin has permission to all operations
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 
@@ -28,7 +28,7 @@ def get_user_sessions():
     user_id = get_jwt_identity()
     stmt = db.select(Session).where(Session.user_id == user_id)
     sessions = db.session.scalars(stmt).all()
-    session_schema = SessionSchema(many=True, exclude=["session_sets"])
+    session_schema = SessionSchema(many=True, exclude=["session_sets", "user"])
     return session_schema.dump(sessions)
 
 
@@ -39,7 +39,8 @@ def get_user_sessions():
 def get_session_by_id(session_id):
     session = db.get_or_404(Session, session_id)
     authorize_owner(session)
-    return SessionSchema().dump(session)
+    session_schema = SessionSchema(exclude=["user"])
+    return session_schema.dump(session)
 
 
 # Create session (C)

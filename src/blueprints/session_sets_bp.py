@@ -28,7 +28,6 @@ def create_session_set():
     # Get the latest Session_ID, session_sets can only be created after the user has created a new session, or if the session selected belongs to them
     session = db.session.query(Session).order_by(Session.session_id.desc()).first()
     session_user = session.user_id 
-
     if session_user != user_info:
         return {"error": "You must be the session owner. Create a new session to become session owner."}, 403
     
