@@ -1,9 +1,9 @@
 from datetime import timedelta
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
 from flask_jwt_extended import create_access_token, jwt_required
 from models.user import User, UserSchema
 from init import db, bcrypt
-from auth import admin_only
+from auth import admin_only, authorize_owner
 
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
@@ -57,6 +57,16 @@ def login():
     
 
 # Update account (U)
+@users_bp.route("/", methods=["PUT", "PATCH"])
+@jwt_required
+def update_user_acc():
+    user = db.get_or_404(User, user_id)
 
+    # stmt = db.session.query(User).filter(id=id)
+    # user = db.session.scalar(stmt)
+    # if user.id != id:
+    #     abort(404)
+
+    
 
 # Delete account (D): Admin only

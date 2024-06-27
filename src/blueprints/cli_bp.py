@@ -72,41 +72,41 @@ def db_create():
     session_set = [
         # has to be created by user...how?
         SessionSet(
-            # exercise_name="Squat",
+            exercise_name="Squat",
             # have a nested value to show the description
             session=sessions[0],
             exercise_set="1",
             weight="40",
             reps="10",
             user=users[1],
-            exercise=exercises[0]
+            # exercise=exercises[0]
         ),
         SessionSet(
-            # exercise_name="Squat",
+            exercise_name="Squat",
             session=sessions[0],
             exercise_set="2",
             weight="60",
             reps="8",
             user=users[1],
-            exercise=exercises[0]
+            # exercise=exercises[0]
         ),
         SessionSet(
-            # exercise_name="Squat",
+            exercise_name="Squat",
             session=sessions[1],
             exercise_set="1",
             weight="40",
             reps="10",
             user=users[2],
-            exercise=exercises[0]
+            # exercise=exercises[0]
         ),
         SessionSet(
-            # exercise_name="Deadlift",
+            exercise_name="Deadlift",
             session=sessions[0],
             exercise_set="1",
             weight="40",
             reps="10",
             user=users[1],
-            exercise=exercises[1]
+            # exercise=exercises[1]
         )
     ]
 

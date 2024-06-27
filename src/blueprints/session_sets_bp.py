@@ -1,7 +1,8 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.session import Session
 from models.session_set import SessionSet, SessionSetSchema
+from models.exercise import Exercise, ExerciseSchema
 from models.user import User
 from init import db
 from auth import authorize_owner
@@ -62,6 +63,14 @@ def update_session_set(id):
     session_set.weight = session_set_info.get("weight", session_set.weight)
     session_set.reps = session_set_info.get("reps", session_set.reps)
     
+
+    # exercise_id_stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.exercise_id == SessionSet.exercise_id).filter(Exercise.exercise_id == SessionSet.exercise_id).where(SessionSet.id ==id)
+    # exercise = db.session.scalar(exercise_id_stmt)
+
+    # # Not working because it already exist as a foreign key?
+    # exercise_info = ExerciseSchema(only=["exercise_id"], unknown="exclude").load(request.json)
+    # exercise.exercise_id = exercise_info.get("exercise_id", exercise.exercise_id)
+
     db.session.commit()
     return SessionSetSchema().dump(session_set), 201
 

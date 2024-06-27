@@ -11,7 +11,7 @@ class SessionSet(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     
     # Turn into foreign key
-    # exercise_name: Mapped[str] = mapped_column(String(200))
+    exercise_name: Mapped[str] = mapped_column(String(200))
     exercise_set: Mapped[int]
     weight: Mapped[int]
     reps: Mapped[int]
@@ -25,8 +25,8 @@ class SessionSet(db.Model):
     user: Mapped["User"] = relationship(back_populates="session_sets")
 
     #foreign key: exercises
-    exercise_id: Mapped[int] = mapped_column(ForeignKey("exercises.exercise_id"))
-    exercise: Mapped["Exercise"] = relationship(back_populates="session_sets")
+    # exercise_id: Mapped[int] = mapped_column(ForeignKey("exercises.exercise_id"))
+    # exercise: Mapped["Exercise"] = relationship(back_populates="session_sets")
 
 
 class SessionSetSchema(ma.Schema):

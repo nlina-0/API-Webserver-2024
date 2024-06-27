@@ -38,7 +38,9 @@ def get_user_sessions():
 @jwt_required()
 def get_session_by_id(session_id):
     session = db.get_or_404(Session, session_id)
-    # Create more specific validation point?
+
+    # Create more specific error? for 404
+
     authorize_owner(session)
     session_schema = SessionSchema(exclude=["user"])
     return session_schema.dump(session)
@@ -50,6 +52,8 @@ def get_session_by_id(session_id):
 def create_session():
     user_id = get_jwt_identity()
     user = db.get_or_404(User, user_id)
+
+    # Create more specific error? for 404
 
     session = Session(
         date=date.today(),
