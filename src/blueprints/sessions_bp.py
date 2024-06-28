@@ -34,7 +34,6 @@ def get_user_sessions():
 
 
 # Get session by ID (R): User must be owner of sessions otherwise an error occurs
-# What happens when user selects somebody elses session?
 @sessions_bp.route("/<int:session_id>")
 @jwt_required()
 def get_session_by_id(session_id):
@@ -45,25 +44,21 @@ def get_session_by_id(session_id):
 
 
 # Create session (C)
-@sessions_bp.route("/", methods=["POST"])
+@sessions_bp.route("", methods=["POST"])
 @jwt_required()
 def create_session():
     user_id = get_jwt_identity()
     user = db.get_or_404(User, user_id)
-
     session = Session(
         date=date.today(),
         user=user
     )
-
     db.session.add(session)
     db.session.commit()
     return SessionSchema().dump(session), 201
 
 
 # Delete session (D): User must be owner of sessions otherwise an error occurs
-# What happens when user attempts to delete someone elses session?
-# What happens when session doesn't exist? Currently not found
 @sessions_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_session(id):
