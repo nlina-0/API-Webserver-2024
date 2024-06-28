@@ -16,7 +16,7 @@ def get_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
     user_schema = UserSchema(many=True, exclude=["sessions", "password"])
-    return user_schema.dump(users)
+    return user_schema.dump(users), 200
     
 
 # Register (C); Anyone can create account
@@ -69,7 +69,7 @@ def update_user_acc():
 
     db.session.commit()
     user_schema = UserSchema(exclude=["sessions"])
-    return user_schema.dump(user), 201
+    return user_schema.dump(user), 200
 
 
 # Delete users (R); Admin only
@@ -100,6 +100,6 @@ def del_user(id):
         else:
             db.session.delete(del_user)
             db.session.commit()
-            return {}
+            return {}, 204
     else:
         return {"error": "You must be an admin to access this resource"}, 403

@@ -14,14 +14,14 @@ exercises_bp = Blueprint("exercises", __name__, url_prefix="/exercises")
 def all_exercises():
     stmt = db.select(Exercise)
     exercises = db.session.scalars(stmt).all()
-    return ExerciseSchema(many=True).dump(exercises)
+    return ExerciseSchema(many=True).dump(exercises), 200
 
 
 # Get one exercise (R); All
 @exercises_bp.route("/<int:id>")
 def one_exercise(id):
     exercise = db.get_or_404(Exercise, id)
-    return ExerciseSchema().dump(exercise)
+    return ExerciseSchema().dump(exercise), 200
 
 
 # Create exercise (C); Admin only
@@ -57,7 +57,7 @@ def update_exercise(id):
             exercises.exercise = exercise_update.get("exercise", exercises.exercise)
             exercises.description = exercise_update.get("description", exercises.description)
             db.session.commit()
-            return ExerciseSchema().dump(exercises), 201
+            return ExerciseSchema().dump(exercises), 200
     else:
         return {"error": "You must be an admin to access this resource"}, 403
 

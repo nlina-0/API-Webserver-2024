@@ -24,12 +24,12 @@ def get_user_sessions():
         stmt = db.select(Session)
         sessions = db.session.scalars(stmt).all()
         session_schema = SessionSchema(many=True, exclude=["session_sets"])
-        return session_schema.dump(sessions)
+        return session_schema.dump(sessions), 200
     else:
         stmt = db.select(Session).where(Session.user_id == user_id)
         sessions = db.session.scalars(stmt).all()
         session_schema = SessionSchema(many=True, exclude=["session_sets", "user"])
-        return session_schema.dump(sessions)
+        return session_schema.dump(sessions), 200
 
 
 
@@ -40,7 +40,7 @@ def get_session_by_id(session_id):
     session = db.get_or_404(Session, session_id)
     authorize_owner(session)
     session_schema = SessionSchema(exclude=["user"])
-    return session_schema.dump(session)
+    return session_schema.dump(session), 200
 
 
 # Create session (C)
@@ -66,4 +66,4 @@ def delete_session(id):
     authorize_owner(session)
     db.session.delete(session)
     db.session.commit()
-    return {}
+    return {}, 204

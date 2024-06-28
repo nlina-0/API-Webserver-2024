@@ -15,7 +15,7 @@ session_sets_bp = Blueprint("session_sets", __name__, url_prefix="/session-sets"
 def get_session_sets_by_id(id):
     session_set = db.get_or_404(SessionSet, id)
     authorize_owner(session_set)
-    return SessionSetSchema().dump(session_set)  
+    return SessionSetSchema().dump(session_set), 200  
     
 
 # Create session set (C)
@@ -64,7 +64,7 @@ def update_session_set(id):
     session_set.reps = session_set_info.get("reps", session_set.reps)
 
     db.session.commit()
-    return SessionSetSchema().dump(session_set), 201
+    return SessionSetSchema().dump(session_set), 200
 
 
 # Delete session set (D)
