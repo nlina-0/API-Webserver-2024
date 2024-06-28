@@ -75,7 +75,7 @@ def update_session_set(id):
     return SessionSetSchema().dump(session_set), 201
 
 
-# Delete session set (D): User must be the owner of session_set (check to see what happens when deletes somebody elses session_set)
+# Delete session set (D)
 @session_sets_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_session(id):

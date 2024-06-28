@@ -13,7 +13,7 @@ class User(db.Model):
     is_admin: Mapped[bool] = mapped_column(Boolean(), server_default="false")
 
     # Bidrectional associations
-    sessions: Mapped[List["Session"]] = relationship(back_populates="user")
+    sessions: Mapped[List["Session"]] = relationship(back_populates="user", cascade="all, delete")
     session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user")
 
 # Creates user schema with marshmallow; provides serialization needed for converting data into JSON

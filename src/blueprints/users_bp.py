@@ -3,14 +3,14 @@ from flask import Blueprint, request, abort
 from flask_jwt_extended import create_access_token, jwt_required
 from models.user import User, UserSchema
 from init import db, bcrypt
-from auth import admin_only, authorize_owner
+from auth import admin_only, get_jwt_identity, authorize_owner
 
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
 
 # Get all users (R); Admin only
 @users_bp.route("")
-@jwt_required()
+@jwt_required() # Do I need this if theres a jwt_required in the decorator of admin_only?
 @admin_only
 def get_users():
     stmt = db.select(User)
@@ -56,17 +56,41 @@ def login():
         return {"error": "Invalid email or password"}, 401
     
 
-# Update account (U)
-@users_bp.route("/", methods=["PUT", "PATCH"])
-@jwt_required
+# Update account (U): User can update acc
+@users_bp.route("", methods=["PUT", "PATCH"])
+@jwt_required()
 def update_user_acc():
-    user = db.get_or_404(User, user_id)
+    user_id = get_jwt_identity()
+    stmt = db.select(User).where(User.id == user_id)
+    user = db.session.scalar(stmt)
 
-    # stmt = db.session.query(User).filter(id=id)
-    # user = db.session.scalar(stmt)
-    # if user.id != id:
-    #     abort(404)
+    user_update = UserSchema(only=["email", "name", "password"], unknown="exclude").load(request.json)
+
+    user.email = user_update.get("email", user.email)
+    user.name = user_update.get("name", user.name)
+    user.password = user_update.get("password", user.password)
+
+    db.session.commit()
+    return UserSchema().dump(user), 201
+
+
+# Get all users (R); Admin only
+@users_bp.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
+def del_user(id):
+    user_id = get_jwt_identity()
+    stmt = db.select(User).where(User.id == user_id, User.is_admin)
+    user = db.session.scalar(stmt)
+    if user:
+        stmt = db.select(User).where(User.id == id)
+        user = db.session.scalar(stmt)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return {}
+        else:
+            return {"error": "User does not exist"}, 404
+    else:
+        return {"error": "You must be an admin to access this resource"}, 403
 
     
-
-# Delete account (D): Admin only
