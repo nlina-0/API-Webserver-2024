@@ -30,7 +30,6 @@ class SessionSet(db.Model):
 
 
 class SessionSetSchema(ma.Schema):
-    # Still need to add validation to ensure exercise_set, weight and reps are all integers
     # Marshmallow validator
     exercise_name = fields.String(required=True)
     exercise_set = fields.Integer(required=True)
@@ -40,6 +39,6 @@ class SessionSetSchema(ma.Schema):
     # session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
     session = fields.Nested("SessionSchema", only=["session_id", "date"])
     user = fields.Nested("UserSchema", only=["id", "name"])
-    exercise = fields.Nested("ExerciseSchema", only=["exercise", "exercise_id"])
+    # exercise = fields.Nested("ExerciseSchema", only=["exercise", "exercise_id"])
     class Meta:
-        fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session", "exercise")
+        fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session")
