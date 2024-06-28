@@ -16,20 +16,20 @@ def db_create():
 
     users = [
         User(
-            # name="John Doe",
-            email="doe@mail.com",
+            # name="Admin One",
+            email="admin@mail.com",
             password=bcrypt.generate_password_hash("123456").decode("utf8"),
             is_admin=True
         ),
         User(
-            name="Sam Jane",
-            email="jane@mail.com",
-            password=bcrypt.generate_password_hash("523456").decode("utf8")
+            name="Blue Two",
+            email="blue@mail.com",
+            password=bcrypt.generate_password_hash("123456").decode("utf8")
         ),
         User(
-            name="Finn Star",
-            email="star@mail.com",
-            password=bcrypt.generate_password_hash("password").decode("utf8")
+            name="Green Three",
+            email="green@mail.com",
+            password=bcrypt.generate_password_hash("123456").decode("utf8")
         )
     ]
 

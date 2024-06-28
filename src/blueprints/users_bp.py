@@ -10,7 +10,7 @@ users_bp = Blueprint("users", __name__, url_prefix="/users")
 
 # Get all users (R); Admin only
 @users_bp.route("")
-@jwt_required() # Do I need this if theres a jwt_required in the decorator of admin_only?
+@jwt_required()
 @admin_only
 def get_users():
     stmt = db.select(User)
@@ -23,17 +23,14 @@ def get_users():
 @users_bp.route("/register", methods=["POST"])
 def create_user():
     params = UserSchema(only=["name", "email", "password"], unknown="exclude").load(request.json)
-
     user = User(
         email=params["email"],
         name=params["name"],
         password=bcrypt.generate_password_hash(params["password"]).decode("utf8"),
         is_admin=False
     )
-
     db.session.add(user)
     db.session.commit()
-
     user_schema = UserSchema(exclude=["sessions"])
     return user_schema.dump(user), 201
 
@@ -71,26 +68,38 @@ def update_user_acc():
     user.password = user_update.get("password", user.password)
 
     db.session.commit()
-    return UserSchema().dump(user), 201
+    user_schema = UserSchema(exclude=["sessions"])
+    return user_schema.dump(user), 201
 
 
-# Get all users (R); Admin only
+# Delete users (R); Admin only
 @users_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def del_user(id):
     user_id = get_jwt_identity()
-    stmt = db.select(User).where(User.id == user_id, User.is_admin)
-    user = db.session.scalar(stmt)
-    if user:
+
+    # Getting user is_admin value
+    stmt = db.select(User).where(User.id == user_id)
+    user_info = db.session.scalar(stmt)
+    user_admin = user_info.is_admin
+
+    # If user is admin perform the following, if not return 403.
+    if user_admin:
+        # Get user from http request by ID
         stmt = db.select(User).where(User.id == id)
-        user = db.session.scalar(stmt)
-        if user:
-            db.session.delete(user)
+        del_user = db.session.scalar(stmt)
+
+        # If user does not exist, abort.
+        if not del_user:
+            abort(404)
+
+        # If user selected is admin return error, admin cannot delete self.
+        del_user_admin = del_user.is_admin
+        if del_user_admin is True:
+            return {"error": "Admin cannot delete self"}, 403
+        else:
+            db.session.delete(del_user)
             db.session.commit()
             return {}
-        else:
-            return {"error": "User does not exist"}, 404
     else:
         return {"error": "You must be an admin to access this resource"}, 403
-
-    
