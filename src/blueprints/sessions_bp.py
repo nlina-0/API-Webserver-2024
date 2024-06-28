@@ -10,37 +10,35 @@ from auth import admin_only, authorize_owner
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 
-# Get all sessions (R): Admin only
+# Get all sessions (R): Admin gets all session with user info. User only gets sessions owned by users.
 @sessions_bp.route("")
-@jwt_required()
-@admin_only
-def get_sessions():
-    stmt = db.select(Session)
-    sessions = db.session.scalars(stmt).all()
-    session_schema = SessionSchema(many=True, exclude=["session_sets"])
-    return session_schema.dump(sessions)
-
-
-# Get all user sessions (R): User must be owner of sessions
-@sessions_bp.route("/user")
 @jwt_required()
 def get_user_sessions():
     user_id = get_jwt_identity()
-    stmt = db.select(Session).where(Session.user_id == user_id)
-    sessions = db.session.scalars(stmt).all()
-    session_schema = SessionSchema(many=True, exclude=["session_sets", "user"])
-    return session_schema.dump(sessions)
+
+    user = db.select(User).where(User.id == user_id)
+    user_info = db.session.scalar(user)
+    user_info_admin = user_info.is_admin 
+    
+    if user_info_admin:
+        stmt = db.select(Session)
+        sessions = db.session.scalars(stmt).all()
+        session_schema = SessionSchema(many=True, exclude=["session_sets"])
+        return session_schema.dump(sessions)
+    else:
+        stmt = db.select(Session).where(Session.user_id == user_id)
+        sessions = db.session.scalars(stmt).all()
+        session_schema = SessionSchema(many=True, exclude=["session_sets", "user"])
+        return session_schema.dump(sessions)
 
 
 
 # Get session by ID (R): User must be owner of sessions otherwise an error occurs
+# What happens when user selects somebody elses session?
 @sessions_bp.route("/<int:session_id>")
 @jwt_required()
 def get_session_by_id(session_id):
     session = db.get_or_404(Session, session_id)
-
-    # Create more specific error? for 404
-
     authorize_owner(session)
     session_schema = SessionSchema(exclude=["user"])
     return session_schema.dump(session)
@@ -53,8 +51,6 @@ def create_session():
     user_id = get_jwt_identity()
     user = db.get_or_404(User, user_id)
 
-    # Create more specific error? for 404
-
     session = Session(
         date=date.today(),
         user=user
@@ -66,6 +62,8 @@ def create_session():
 
 
 # Delete session (D): User must be owner of sessions otherwise an error occurs
+# What happens when user attempts to delete someone elses session?
+# What happens when session doesn't exist? Currently not found
 @sessions_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_session(id):
