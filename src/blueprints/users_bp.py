@@ -3,7 +3,7 @@ from flask import Blueprint, request, abort
 from flask_jwt_extended import create_access_token, jwt_required
 from models.user import User, UserSchema
 from init import db, bcrypt
-from auth import admin_only, get_jwt_identity, authorize_owner
+from auth import admin_only, get_jwt_identity
 
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
@@ -19,7 +19,7 @@ def get_users():
     return user_schema.dump(users)
     
 
-# Register (C); User can create account
+# Register (C); Anyone can create account
 @users_bp.route("/register", methods=["POST"])
 def create_user():
     params = UserSchema(only=["name", "email", "password"], unknown="exclude").load(request.json)

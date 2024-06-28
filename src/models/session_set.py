@@ -31,6 +31,11 @@ class SessionSet(db.Model):
 
 class SessionSetSchema(ma.Schema):
     # Still need to add validation to ensure exercise_set, weight and reps are all integers
+    # Marshmallow validator
+    exercise_name = fields.String(required=True)
+    exercise_set = fields.Integer(required=True)
+    weight = fields.Integer(required=True)
+    reps = fields.Integer(required=True)
 
     # session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
     session = fields.Nested("SessionSchema", only=["session_id", "date"])

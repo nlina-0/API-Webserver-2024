@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.session import Session, SessionSchema
 from models.user import User
 from init import db
-from auth import admin_only, authorize_owner
+from auth import authorize_owner
 
 # Admin has permission to all operations
 

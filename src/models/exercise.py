@@ -16,5 +16,8 @@ class Exercise(db.Model):
     # session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="exercise")
 
 class ExerciseSchema(ma.Schema):
+    exercise = fields.String(required=True)
+    description = fields.String(required=True)
+
     class Meta:
         fields = ("exercise_id", "exercise", "description")

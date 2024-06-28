@@ -1,7 +1,7 @@
 from flask import Blueprint, request, abort
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.exercise import Exercise, ExerciseSchema
-from models.session_set import SessionSet
+from models.user import User
 from init import db
 from auth import admin_only
 
@@ -26,6 +26,7 @@ def one_exercise(id):
 
 # Create exercise (C); Admin only
 @exercises_bp.route("", methods=["POST"])
+@jwt_required()
 @admin_only
 def create_exercise():
     new_exercise = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
@@ -39,35 +40,51 @@ def create_exercise():
 
 
 # Update exercise (U); Admin only
-# @admin_only
-# @jwt_required()
 @exercises_bp.route("/<int:id>", methods=["PUT", "POST"])
+@jwt_required()
 def update_exercise(id):
-    stmt = db.select(Exercise).filter_by(exercise_id=id)
-    exercises = db.session.scalar(stmt)
-    if not exercises:
-        abort(404)
-
-    exercise_update = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
-    exercises.exercise = exercise_update.get("exercise", exercises.exercise)
-    exercises.description = exercise_update.get("description", exercises.description)
-
-    db.session.commit()
-    return ExerciseSchema().dump(exercises), 201
+    user_id = get_jwt_identity()
+    stmt = db.select(User).where(User.id == user_id, User.is_admin)
+    user = db.session.scalar(stmt)
+    # If user is admin
+    if user:    
+        stmt = db.select(Exercise).filter_by(exercise_id=id)
+        exercises = db.session.scalar(stmt)
+        if not exercises:
+            abort(404)
+        else:
+            exercise_update = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
+            exercises.exercise = exercise_update.get("exercise", exercises.exercise)
+            exercises.description = exercise_update.get("description", exercises.description)
+            db.session.commit()
+            return ExerciseSchema().dump(exercises), 201
+    else:
+        return {"error": "You must be an admin to access this resource"}, 403
 
 
 
 # Delete exercise (D); Admin only
 @exercises_bp.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_exercise(id):
-    stmt = db.select(Exercise).filter_by(exercise_id=id)
-    exercise = db.session.scalar(stmt)
-    if not exercise:
-        abort(404)
-    
-    db.session.delete(exercise)
-    db.session.commit()
-    return {}
+    # Check to see if 
+    user_id = get_jwt_identity()
+    stmt = db.select(User).where(User.id == user_id, User.is_admin)
+    user = db.session.scalar(stmt)
+    if user:
+        stmt = db.select(Exercise).filter_by(exercise_id=id)
+        exercise = db.session.scalar(stmt)
+        if not exercise:
+            abort(404)
+        else:
+            db.session.delete(exercise)
+            db.session.commit()
+            return {}    
+    else:
+        return {"error": "You must be an admin to access this resource"}, 403
+
+
+
 
 
 # # Get exercise by name. Currently not working - leave til the end.

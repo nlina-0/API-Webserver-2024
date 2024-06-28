@@ -9,7 +9,7 @@ from auth import authorize_owner
 
 session_sets_bp = Blueprint("session_sets", __name__, url_prefix="/session-sets")
 
-# # Get session_set (R): User must be the owner of session_set
+# # Get session_set, ID must be entered (R): User must be the owner of session_set
 @session_sets_bp.route("/<int:id>")
 @jwt_required()
 def get_session_sets_by_id(id):
@@ -48,7 +48,7 @@ def create_session_set():
     return SessionSetSchema().dump(session_set), 201
 
 
-# Update session set (U): User must be the owner of session_set
+# Update session set (U): User must be the owner of session_set, Admin has authority to update as well
 @session_sets_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_session_set(id):
@@ -62,14 +62,6 @@ def update_session_set(id):
     session_set.exercise_set = session_set_info.get("exercise_set", session_set.exercise_set)
     session_set.weight = session_set_info.get("weight", session_set.weight)
     session_set.reps = session_set_info.get("reps", session_set.reps)
-    
-
-    # exercise_id_stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.exercise_id == SessionSet.exercise_id).filter(Exercise.exercise_id == SessionSet.exercise_id).where(SessionSet.id ==id)
-    # exercise = db.session.scalar(exercise_id_stmt)
-
-    # # Not working because it already exist as a foreign key?
-    # exercise_info = ExerciseSchema(only=["exercise_id"], unknown="exclude").load(request.json)
-    # exercise.exercise_id = exercise_info.get("exercise_id", exercise.exercise_id)
 
     db.session.commit()
     return SessionSetSchema().dump(session_set), 201

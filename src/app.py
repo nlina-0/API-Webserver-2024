@@ -22,10 +22,6 @@ def hello():
 def not_found(err):
     return {'error': 'Not Found'}, 404
 
-# @app.errorhandler(405)
-# def not_found(err):
-#     return {'error': 'Invalid input'}, 405
-
 @app.errorhandler(ValidationError)
 def invalid_request(err):
     return {"error": vars(err)["messages"]}, 400

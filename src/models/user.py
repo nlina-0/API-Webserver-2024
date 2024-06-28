@@ -1,8 +1,9 @@
+from typing import List, Optional
 from marshmallow import fields
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Boolean
-from typing import List, Optional
 from init import db, ma
+from marshmallow.validate import Length
 
 class User(db.Model):
     __tablename__="users"
@@ -18,8 +19,10 @@ class User(db.Model):
 
 # Creates user schema with marshmallow; provides serialization needed for converting data into JSON
 class UserSchema(ma.Schema):
-    # Marshmallow validator, ensures that what is entered is an email
-    # email = fields.Email(required=True)
+    # Marshmallow validator
+    email = fields.Email(required=True)
+    password = fields.String(validate=Length(min=8, error="Password must be at least 8 characters long"), required=True)
+
     sessions = fields.List(fields.Nested("SessionSchema", exclude=["user"]))
     # session_sets = fields.List(fields.Nested("SessionSetSchema", exclude=["user", "session"]))
 
