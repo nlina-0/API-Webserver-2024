@@ -68,6 +68,7 @@ def update_exercise(id):
 @jwt_required()
 def delete_exercise(id):
     user_id = get_jwt_identity()
+    # create function for this:
     stmt = db.select(User).where(User.id == user_id, User.is_admin)
     user = db.session.scalar(stmt)
     if user:
@@ -92,7 +93,8 @@ def delete_exercise(id):
 #     exercise_upper = exercise.title()
 #     # stmt = db.session.query(Exercise).filter(Exercise.exercise == exercise_upper)
 #     # stmt = db.session.query(Exercise).filter(Exercise.exercise_id == exercise)
-#     stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.exercise == SessionSet.exercise_name).filter(Exercise.exercise == SessionSet.exercise_name)
+#     
+# stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.exercise == SessionSet.exercise_name).filter(Exercise.exercise == SessionSet.exercise_name)
 #     exercise = db.session.scalar(stmt)
 #     print(exercise.exercise_id)
 #     return ExerciseSchema().dump(exercise)
