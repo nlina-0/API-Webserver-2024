@@ -20,17 +20,24 @@ def get_users():
     
 
 # Register (C); Anyone can create account
+# --------> What happens when user already exists???
 @users_bp.route("/register", methods=["POST"])
 def create_user():
     params = UserSchema(only=["name", "email", "password"], unknown="exclude").load(request.json)
+
+    if User.query.filter_by(email=params["email"]).first():
+        return {"message": "Email already exists"}, 400
+
     user = User(
         email=params["email"],
         name=params["name"],
         password=bcrypt.generate_password_hash(params["password"]).decode("utf8"),
         is_admin=False
     )
+
     db.session.add(user)
     db.session.commit()
+    
     user_schema = UserSchema(exclude=["sessions"])
     return user_schema.dump(user), 201
 
@@ -38,15 +45,12 @@ def create_user():
 # Login (C); All
 @users_bp.route("/login", methods=["POST"])
 def login():
-    # unknown=exclude will exclude any invalid fields
     params = UserSchema(only=["email", "password"]).load(request.json, unknown="exclude")
     stmt = db.select(User).where(User.email == params["email"])
-    # scalar returns single tuple
     user = db.session.scalar(stmt)
     
     if user and bcrypt.check_password_hash(user.password, params["password"]):
         # Creates JWT token
-        # additional_claims={"email": user.email, "name": user.name},
         token = create_access_token(identity=user.id, expires_delta=timedelta(hours=2))
         return {"token": token}
     else:
@@ -58,18 +62,22 @@ def login():
 @jwt_required()
 def update_user_acc():
     user_id = get_jwt_identity()
-    stmt = db.select(User).where(User.id == user_id)
-    user = db.session.scalar(stmt)
+    
+    # stmt = db.select(User).where(User.id == user_id)
+    # user = db.session.scalar(stmt)
+    # print(vars(user))
+
+    get_user = db.get_or_404(User, user_id)
 
     user_update = UserSchema(only=["email", "name", "password"], unknown="exclude").load(request.json)
 
-    user.email = user_update.get("email", user.email)
-    user.name = user_update.get("name", user.name)
-    user.password = user_update.get("password", user.password)
+    get_user.email = user_update.get("email", get_user.email)
+    get_user.name = user_update.get("name", get_user.name)
+    get_user.password = user_update.get("password", get_user.password)
 
     db.session.commit()
     user_schema = UserSchema(exclude=["sessions"])
-    return user_schema.dump(user), 200
+    return user_schema.dump(get_user), 200
 
 
 # Delete users (R); Admin only

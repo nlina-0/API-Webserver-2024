@@ -67,7 +67,6 @@ def update_exercise(id):
 @exercises_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_exercise(id):
-    # Check to see if 
     user_id = get_jwt_identity()
     stmt = db.select(User).where(User.id == user_id, User.is_admin)
     user = db.session.scalar(stmt)
