@@ -58,6 +58,7 @@ def login():
     
 
 # Update account (U): User can update acc
+# Need to double check this
 @users_bp.route("", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_user_acc():

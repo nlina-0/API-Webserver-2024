@@ -27,7 +27,7 @@ def authorize_owner(obj):
     user_admin = user.is_admin
 
     if user_id != obj.user_id and not user_admin:
-        abort(make_response(jsonify(error="You must be the card owner to access this resource"), 403))
+        abort(make_response(jsonify(error="You must be the owner to access this resource"), 403))
 
 
 # Route decorator - ensure JWT user is an admin - test

@@ -49,6 +49,7 @@ def create_session_set():
 
 
 # Update session set (U): User must be the owner of session_set, Admin has authority to update as well
+# Something wrong with update
 @session_sets_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_session_set(id):
