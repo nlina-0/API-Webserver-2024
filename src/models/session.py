@@ -11,7 +11,7 @@ class Session(db.Model):
     date: Mapped[date]
 
     # Foreign key is implicitly not null
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     # To establish a bidirectional relationship in one-to-many 
     user: Mapped["User"] = relationship(back_populates="sessions")
 

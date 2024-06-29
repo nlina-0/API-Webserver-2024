@@ -15,7 +15,7 @@ class User(db.Model):
 
     # Bidrectional associations
     sessions: Mapped[List["Session"]] = relationship(back_populates="user", cascade="all, delete")
-    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user")
+    session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user", cascade="all, delete")
 
 # Creates user schema with marshmallow; provides serialization needed for converting data into JSON
 class UserSchema(ma.Schema):

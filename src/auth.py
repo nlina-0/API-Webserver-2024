@@ -14,7 +14,6 @@ def admin_only(fn):
             return fn()
         else:
             return {"error": "You must be an admin to access this resource"}, 403
-    
     return inner
 
 
@@ -22,10 +21,8 @@ def admin_only(fn):
 # Allow admin to bypass
 def authorize_owner(obj):
     user_id = get_jwt_identity()
-    
     user = db.get_or_404(User, user_id)
     user_admin = user.is_admin
-
     if user_id != obj.user_id and not user_admin:
         abort(make_response(jsonify(error="You must be the owner to access this resource"), 403))
 

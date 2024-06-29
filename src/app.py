@@ -30,5 +30,4 @@ def invalid_request(err):
 def missing_key(err):
     return {"error": f"Missing field: {str(err)}"}, 400
 
-# prints all routes in terminal
 print(app.url_map)

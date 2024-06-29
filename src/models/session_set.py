@@ -17,11 +17,12 @@ class SessionSet(db.Model):
     reps: Mapped[int]
 
     # foreign key: session
-    session_id: Mapped[int] = mapped_column(ForeignKey("sessions.session_id"))
+    session_id: Mapped[int] = mapped_column(ForeignKey("sessions.session_id"), nullable=False)
     session: Mapped["Session"] = relationship(back_populates="session_sets")
 
+    # how to add nullable=False
     # foreign key: user_id 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False))
     user: Mapped["User"] = relationship(back_populates="session_sets")
 
     #foreign key: exercises

@@ -6,7 +6,6 @@ from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
-# Part of SQLAlchemy, stores all the meta data and column mappings of models
 class Base(DeclarativeBase):
     pass
 
