@@ -1,5 +1,9 @@
 # T2A2: API Webserver
 
+### [Github repository](https://github.com/nlina-0/API-Webserver-2024)
+
+
+***
 
 ### R1. API purpose
 The purpose of this application is to provide personal trainers in the fitness industry with a platform to manage their client's progress. Clients can create their own accounts to record their workout sessions. The information recorded includes exercises performed, sets and repetitions done, as well as exercise weight performed for resistance training. Personal trainers can access this data and oversee their client's progress.  Personal trainers will be able to create exercises and provide information about the exercise that a client can access and look up when training on their own. <br></br>
