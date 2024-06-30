@@ -1,4 +1,4 @@
-# T2A2: API
+# T2A2: API Webserver
 
 
 ### R1. API purpose
@@ -7,15 +7,29 @@ The purpose of this application is to provide personal trainers in the fitness i
 ***
 
 ### R2. Project management
+
+#### Trello
 Using Trello as my task management tool, I defined and allocated what needed to be done for each model and blueprint of the API through checklists. Having an overview of everything that needed to be done allowed me to organise and prioritise tasks within a self directed timeline. 
 
 ###### An overview of tasks:
 ![Trello, overview](docs/trello_screenshot_01.png)
 
-> add more screenshots
+###### Task:
+![Trello, users entitty](docs/trello_screenshot_02_users.png)
+![Trello, users endpoints](docs/trello_screenshot_03_users.png)
+![Trello, sessions entitty](docs/trello_screenshot_04_sessions.png)
+![Trello, sessions endpoints](docs/trello_screenshot_05_sessions.png)
+![Trello, sets entitty](docs/trello_screenshot_06_sets.png)
+![Trello, sets endpoints](docs/trello_screenshot_07_sets.png)
+![Trello, exercise entitty](docs/trello_screenshot_08_exercise.png)
 
-I used Github and Git was my version control system. It allowed me to log and oversee all details of development at all stages. Using git branch I was able to experiment and debug code without affecting working code.
 
+
+
+#### Github and Git
+The use of git allowed me to log and oversee all details of development at all stages. Using git branch I was able to experiment and debug code without affecting working code.
+
+#### Daily Stand-ups
 The daily stand-ups on discord provided me with a platform to channel my thoughts and better understand my development process. It proved to be extremely useful as I was able to read back on previous logs and improve upon things mentioned. Additionally it provided me with reminders of what needed to be done.  
 <br></br>
 
@@ -34,7 +48,7 @@ A free and open-source relational database system that is used to manage the sto
 An object relational mapper (ORM) for Python. It provides access and management to the PostgreSQL database using Python rather than SQL. 
 
 ### Marshmallow
-Marshmallow serialises or deserialises data between …
+Marshmallow serialises and deserialises data. Also, automatically generates fields for a schema.
 <br></br>
 
 ***
@@ -44,12 +58,12 @@ Marshmallow serialises or deserialises data between …
 
 #### Benefits:
 
-- Cost effective: Free and open source tool.
-- Flexibility: Supports different languages to write database functions such as Python. 
-- Community: Has a large active community that provides continuous support and development.
-- Object-oriented database features (ORDM): Allows for inheritance relationships between tables. Child tables are able to inherit parent attributes which reduces data redundancy.
-- Advanced SQL support: provides foreign keys, complex queries, and triggers.
-- ACID compliant…
+- **Cost effective**: Free and open source tool.
+- **Flexibility**: Supports different languages to write database functions such as Python. 
+- **Community**: Has a large active community that provides continuous support and development.
+- **Object-oriented database features (ORDM)**: Allows for inheritance relationships between tables. Child tables are able to inherit parent attributes which reduces data redundancy.
+- **Advanced SQL support**: provides foreign keys, complex queries, and triggers.
+- ACID compliant
 
 #### Drawbacks:
 
@@ -85,7 +99,7 @@ USERS (user_id, email, name, password)
 EXERCISES (exercise_id, name, description)
 SESSIONS (session_id, date, set, weight, repetition, user_id, exercise_id)
 
-> insert image
+![ERD](docs/ERD_Diagram.png)
 
 #### Normalisation
 The user and exercise entity did not need to go through any normalisation from the initial design using the normal form rules. The session entity was split into three tables to eliminate the duplication of dates, exercises and session information within the same table.
@@ -96,11 +110,16 @@ A table was created to represent the exercises performed in a session (‘sessio
 
 A separate table, called ‘exercise_set’ was created to represent the clients progression of each exercise recorded in the ‘session_exercises’ table. 
 
-> insert image
+![Sessions table, before normalisation](docs/NF1_sessions.png)
+<br></br>
+![Sessions table, normalised](docs/NF3_sessions.png)
+![Session exercises, normalised](docs/NF3_sessionExercises.png)
+![Sessions session sets, normalised](docs/NF3_exerciseSets.png)
 
 #### Crow's Foot notation ERD
 
-> insert image
+![Crows foot notation ERD](docs/ERD_CrowsFootNotation_01.png)
+
 <br></br>
 
 ***
@@ -108,9 +127,9 @@ A separate table, called ‘exercise_set’ was created to represent the clients
 ### R7. Models and Relationships
 During development the design and planning phase were revisited multiple times. The ERD below depicts the implemented models.
 
->insert image
+![Crows foot notation ERD](docs/ERD_CrowsFootNotation_02.png)
 
-Models:
+**Models**:
 - User (user_id, name, email, password, is_admin)
 - Session (session_id, date, user_id)
 - Session_sets (id, set, weight, rep, session_id, user_id)
