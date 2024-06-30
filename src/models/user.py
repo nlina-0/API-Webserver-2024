@@ -13,7 +13,7 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(String(200))
     is_admin: Mapped[bool] = mapped_column(Boolean(), server_default="false")
 
-    # Bidrectional associations
+    # Associations
     sessions: Mapped[List["Session"]] = relationship(back_populates="user", cascade="all, delete")
     session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user", cascade="all, delete")
 
@@ -21,8 +21,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     # Marshmallow validator
     email = fields.Email(required=True)
-    # Effecting how the user update endpoint is getting the password.
-    # password = fields.String(validate=Length(min=8, error="Password must be at least 8 characters long"), required=True)
+    password = fields.String(required=True)
 
     sessions = fields.List(fields.Nested("SessionSchema", exclude=["user"]))
     # session_sets = fields.List(fields.Nested("SessionSetSchema", exclude=["user", "session"]))

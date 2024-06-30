@@ -20,13 +20,12 @@ def get_users():
     
 
 # Register (C); Anyone can create account
-# --------> What happens when user already exists???
 @users_bp.route("/register", methods=["POST"])
 def create_user():
     params = UserSchema(only=["name", "email", "password"], unknown="exclude").load(request.json)
 
     if User.query.filter_by(email=params["email"]).first():
-        return {"message": "Email already exists"}, 400
+        return {"message": "Email already exists"}, 409
 
     user = User(
         email=params["email"],
@@ -57,20 +56,22 @@ def login():
         return {"error": "Invalid email or password"}, 401
     
 
-# Update account (U): User can update acc
-# Need to double check this
+# Update user account (U): User can update acc
 @users_bp.route("", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_user_acc():
     user_id = get_jwt_identity()
-    
-    # stmt = db.select(User).where(User.id == user_id)
-    # user = db.session.scalar(stmt)
-    # print(vars(user))
-
     get_user = db.get_or_404(User, user_id)
+    user_update = UserSchema(only=["email", "name", "password"], unknown="exclude").load(request.json, partial=True)
 
-    user_update = UserSchema(only=["email", "name", "password"], unknown="exclude").load(request.json)
+    stmt = db.select(User)
+    users = db.session.scalars(stmt)
+    if user_update.get("email"):
+        for user in users:
+            if user.email == user_update["email"]:
+                return {"message": "Email already exists"}, 409
+    else:
+        pass
 
     get_user.email = user_update.get("email", get_user.email)
     get_user.name = user_update.get("name", get_user.name)

@@ -22,7 +22,7 @@ class SessionSet(db.Model):
 
     # how to add nullable=False
     # foreign key: user_id 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="session_sets")
 
     #foreign key: exercises
