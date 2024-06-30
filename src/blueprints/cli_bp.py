@@ -70,16 +70,13 @@ def db_create():
     db.session.commit()
 
     session_set = [
-        # has to be created by user...how?
         SessionSet(
             exercise_name="Squat",
-            # have a nested value to show the description
             session=sessions[0],
             exercise_set="1",
             weight="40",
             reps="10",
             user=users[1],
-            # exercise=exercises[0]
         ),
         SessionSet(
             exercise_name="Squat",
@@ -88,7 +85,6 @@ def db_create():
             weight="60",
             reps="8",
             user=users[1],
-            # exercise=exercises[0]
         ),
         SessionSet(
             exercise_name="Squat",
@@ -97,7 +93,6 @@ def db_create():
             weight="40",
             reps="10",
             user=users[2],
-            # exercise=exercises[0]
         ),
         SessionSet(
             exercise_name="Deadlift",
@@ -106,7 +101,6 @@ def db_create():
             weight="40",
             reps="10",
             user=users[1],
-            # exercise=exercises[1]
         )
     ]
 

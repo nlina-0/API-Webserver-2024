@@ -83,28 +83,3 @@ def delete_exercise(id):
     else:
         return {"error": "You must be an admin to access this resource"}, 403
 
-
-
-
-
-# # Get exercise by name. Currently not working - leave til the end.
-# @exercises_bp.route("/<exercise>")
-# def get_exercise_by_name(exercise):
-#     exercise_upper = exercise.title()
-#     # stmt = db.session.query(Exercise).filter(Exercise.exercise == exercise_upper)
-#     # stmt = db.session.query(Exercise).filter(Exercise.exercise_id == exercise)
-#     
-# stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.exercise == SessionSet.exercise_name).filter(Exercise.exercise == SessionSet.exercise_name)
-#     exercise = db.session.scalar(stmt)
-#     print(exercise.exercise_id)
-#     return ExerciseSchema().dump(exercise)
-
-
-# Can I match exercise name to exercise_name in table?
-# SessionSet.exercise_name == Exercise.exercise
-
-# stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.exercise == SessionSet.exercise_name).filter(Exercise.exercise == SessionSet.exercise_name)
-# 
-# exercise = db.session.scalar(stmt)
-
-

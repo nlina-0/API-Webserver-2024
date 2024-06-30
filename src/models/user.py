@@ -17,14 +17,13 @@ class User(db.Model):
     sessions: Mapped[List["Session"]] = relationship(back_populates="user", cascade="all, delete")
     session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="user", cascade="all, delete")
 
-# Creates user schema with marshmallow; provides serialization needed for converting data into JSON
+
 class UserSchema(ma.Schema):
     # Marshmallow validator
     email = fields.Email(required=True)
     password = fields.String(validate=Length(min=8, error='Password must be at least 8 characters long'), required=True)
 
     sessions = fields.List(fields.Nested("SessionSchema", exclude=["user"]))
-    # session_sets = fields.List(fields.Nested("SessionSetSchema", exclude=["user", "session"]))
 
     class Meta:
         fields = ("id", "name", "email", "password", "is_admin", "sessions")

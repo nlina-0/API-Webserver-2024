@@ -20,14 +20,9 @@ class SessionSet(db.Model):
     session_id: Mapped[int] = mapped_column(ForeignKey("sessions.session_id"), nullable=False)
     session: Mapped["Session"] = relationship(back_populates="session_sets")
 
-    # how to add nullable=False
     # foreign key: user_id 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="session_sets")
-
-    #foreign key: exercises
-    # exercise_id: Mapped[int] = mapped_column(ForeignKey("exercises.exercise_id"))
-    # exercise: Mapped["Exercise"] = relationship(back_populates="session_sets")
 
 
 class SessionSetSchema(ma.Schema):
@@ -37,9 +32,8 @@ class SessionSetSchema(ma.Schema):
     weight = fields.Integer(required=True)
     reps = fields.Integer(required=True)
 
-    # session = fields.Nested("SessionSchema", only=["session_id", "user", "date"])
     session = fields.Nested("SessionSchema", only=["session_id", "date"])
     user = fields.Nested("UserSchema", only=["id", "name"])
-    # exercise = fields.Nested("ExerciseSchema", only=["exercise", "exercise_id"])
+
     class Meta:
         fields = ("id", "exercise_name", "exercise_set", "weight", "reps", "session")

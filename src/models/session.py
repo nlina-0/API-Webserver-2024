@@ -10,9 +10,8 @@ class Session(db.Model):
     session_id: Mapped[int] = mapped_column(primary_key=True)
     date: Mapped[date]
 
-    # Foreign key is implicitly not null
+    # Foreign key
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    # To establish a bidirectional relationship in one-to-many 
     user: Mapped["User"] = relationship(back_populates="sessions")
 
     session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="session", cascade="all, delete")

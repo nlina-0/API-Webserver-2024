@@ -49,14 +49,13 @@ def create_session_set():
 
 
 # Update session set (U): User must be the owner of session_set, Admin has authority to update as well
-# Something wrong with update
 @session_sets_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_session_set(id):
     session_set = db.get_or_404(SessionSet, id)
     authorize_owner(session_set)
 
-    session_set_info = SessionSetSchema(only=["id", "exercise_name", "exercise_set", "weight", "reps"], unknown="exclude").load(request.json)
+    session_set_info = SessionSetSchema(only=["id", "exercise_name", "exercise_set", "weight", "reps"], unknown="exclude").load(request.json, partial=True)
 
     session_set.id = session_set_info.get("id", session_set.id)
     session_set.exercise_name = session_set_info.get("exercise_name", session_set.exercise_name)
