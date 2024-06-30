@@ -431,11 +431,9 @@ Bearer Token: "token"
 
 ###### Response
 ```py
-{
   "description": "",
   "exercise": "",
   "exercise_id": 
-}
 ```
 
 ###### Failed Responses
@@ -466,21 +464,17 @@ Bearer Token: "token"
 
 ###### Body: All fields are optional
 ```py
-{
   "name": "",
   "description": ""
-}
 ```
 
 ###### Response
 ```py
-{
   "email": "",
   "id": ,
   "is_admin": ,
   "name": "",
   "password": ""
-}
 ```
 
 ###### Failed Responses
@@ -593,18 +587,14 @@ Bearer Token: "token"
   ```py
 Status code: 403
 
-{
   "error": "You must be the owner to access this resource"
-}
 ```
 
 If a user or admin enters a session that does not exist:
   ```py
 Status code: 404
 
-{
   "error": "Not Found"
-}
 ```
 
  <br></br>
@@ -638,9 +628,7 @@ If no one is logged in:
 ```py
 Status code: 422
 
-{
   "msg": "Bad Authorization header. Expected 'Authorization: Bearer <JWT>'"
-}
 ```
 
 <br></br>
@@ -664,18 +652,14 @@ If the user does not own the session:
 ```py
 Status code: 403
 
-{
   "error": "You must be the owner to access this resource"
-}
 ```
 
 If the session does not exist:
 ```py
 Status code: 404
 
-{
   "error": "Not Found"
-}
 ```
 
 <br></br>
@@ -713,17 +697,13 @@ If the user does not own the session set:
 ```py
 Status code: 403
 
-{
   "error": "You must be the owner to access this resource"
-}
 ```
 If the session set does not exist:
 ```py
 Status code: 404
 
-{
   "error": "Not Found"
-}
 ```
 
 <br></br>
@@ -740,12 +720,10 @@ Bearer Token: "token"
 ```
 ###### Body: All fields are required
 ```py
-{
   "exercise_set": "",
   "exercise_name": "",
   "reps": "",
   "weight": ""
-}
 ```
 
 ###### Response
@@ -766,9 +744,7 @@ If no one is logged in:
 ```py
 Status code: 422
 
-{
   "msg": "Bad Authorization header. Expected 'Authorization: Bearer <JWT>'"
-}
 ```
 
 If field in body is missing: 
@@ -787,9 +763,7 @@ If user does not own the latest session:
 ```py
 Status code: 403
 
-{
-  "error": "You must be the session owner. Create a new session to become session owner."
-}
+"error": "You must be the session owner. Create a new session to become session owner."
 ```
 
 <br></br>
@@ -807,21 +781,17 @@ Bearer Token: "token"
 
 ###### Body: All fields are optional
 ```py
-{
   "name": "",
   "description": ""
-}
 ```
 
 ###### Response
 ```py
-{
   "email": "",
   "id": ,
   "is_admin": ,
   "name": "",
   "password": ""
-}
 ```
 
 <br></br>
@@ -845,16 +815,12 @@ If the user does not own the session set:
 ```py
 Status code: 403
 
-{
   "error": "You must be the owner to access this resource"
-}
 ```
 
 If the session set does not exist:
 ```py
 Status code: 404
 
-{
   "error": "Not Found"
-}
 ```
