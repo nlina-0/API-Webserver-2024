@@ -5,12 +5,12 @@
 
 ***
 
-### R1. API purpose
+## R1. API purpose
 The purpose of this application is to provide personal trainers in the fitness industry with a platform to manage their client's progress. Clients can create their own accounts to record their workout sessions. The information recorded includes exercises performed, sets and repetitions done, as well as exercise weight performed for resistance training. Personal trainers can access this data and oversee their client's progress.  Personal trainers will be able to create exercises and provide information about the exercise that a client can access and look up when training on their own. <br></br>
 
 ***
 
-### R2. Project management
+## R2. Project management
 
 #### Trello
 Using Trello as my task management tool, I defined and allocated what needed to be done for each model and blueprint of the API through checklists. Having an overview of everything that needed to be done allowed me to organise and prioritise tasks within a self directed timeline. 
@@ -39,7 +39,7 @@ The daily stand-ups on discord provided me with a platform to channel my thought
 
 ***
 
-### R3. Third-party services, packages and dependencies in app
+## R3. Third-party services, packages and dependencies in app
 ### Flask
 A lightweight python framework for developing web applications or RESTful APIs. Flask provides the most essential components for development making it quick to deploy and test an application. Flask’s minimalist design makes it easy to learn for beginners. Additionally, flask provides extreme flexibility with its modular design, allowing for moveable parts and making code easier to debug. 
 
@@ -57,7 +57,7 @@ Marshmallow serialises and deserialises data. Also, automatically generates fiel
 
 ***
 
-### R4. PostgreSQL
+## R4. PostgreSQL
 
 
 #### Benefits:
@@ -76,7 +76,7 @@ Marshmallow serialises and deserialises data. Also, automatically generates fiel
 
 ***
 
-### R5. SQLAlchemy
+## R5. SQLAlchemy
 
 SQLAlchemy is an object-relational mapping system (ORM) that allows the use of the Python language to access and manage SQL databases. It provides a streamlined workflow that allows SQL queries to be written in object based programming. This makes code more maintainable by encapsulating database logic in model classes.
 
@@ -93,7 +93,7 @@ SQLAlchemy is an object-relational mapping system (ORM) that allows the use of t
 
 ***
 
-### R6. ERD and relationships
+## R6. ERD and relationships
 
 #### Entity Relationship Diagram
 
@@ -128,7 +128,7 @@ A separate table, called ‘exercise_set’ was created to represent the clients
 
 ***
 
-### R7. Models and Relationships
+## R7. Models and Relationships
 During development the design and planning phase were revisited multiple times. The ERD below depicts the implemented models.
 
 ![Crows foot notation ERD](docs/ERD_CrowsFootNotation_02.png)
@@ -169,7 +169,7 @@ stmt = db.session.query(Exercise, SessionSet).join(SessionSet, Exercise.id == Se
 
 ***
 
-### R8. API Endpoints
+## R8. API Endpoints
 ### Create/Register User
 Anyone can create an account.
 ```py
