@@ -187,6 +187,40 @@ Anyone can create an account.
   "name": "",
   "password": ""
 ```
+###### Failed Responses
+If there is a missing field:
+  ```py
+Status code: 400
+
+  "error": "Missing field: 'field'"
+```
+If a valid email is not enterd:
+```py
+Status code: 400
+
+  "error": {
+    "email": [
+      "Not a valid email address."
+    ]
+  }
+
+```
+If an email already exist in the database:
+```py
+Status code: 409
+
+"message": "Email already exists"
+```
+If password does not meet required minimum 8 character length:
+```py
+Status code: 400
+
+"error": {
+    "password": [
+      "Password must be at least 8 characters long"
+    ]
+}
+```
 
 <br></br>
 
@@ -204,6 +238,14 @@ Anyone can create an account.
 ###### Response
 ```py
     "token":
+```
+
+###### Failed Responses
+If email or password is invalid:
+  ```py
+Status code: 401
+
+  "error": "Invalid email or password"
 ```
 
 <br></br>
@@ -231,6 +273,14 @@ Bearer Token: "token"
 ]
   ```
 
+###### Failed Responses
+If user is not admin:
+  ```py
+Status code: 401
+
+"error": "You must be an admin to access this resource"
+```  
+
   <br></br>
 
   ### Delete User: Admin only
@@ -248,9 +298,23 @@ user_id: int
 Bearer Token: "token"
 ```
 
+###### Failed Responses
+If user is not admin:
+```py
+Status code: 401
+
+"error": "You must be an admin to access this resource"
+``` 
+If user_id does not exist:
+  ```py
+Status code: 404
+
+"error": "Not Found"
+``` 
+
  <br></br>
 
-  ### Update User - double check !!
+  ### Update User
   User has to be logged in and can only update their own account. Fields that can be updated are name, email and password.
 
 ``` py
@@ -264,23 +328,27 @@ Bearer Token: "token"
 
 ###### Body: All fields are optional
 ```py
-{
   "name": "",
   "email": "",
   "password": ""
-}
 ```
 
 ###### Response
 ```py
-{
   "email": "",
   "id": ,
   "is_admin": ,
   "name": "",
   "password": ""
-}
 ```
+
+###### Failed Responses
+If the user updates to an existing email:
+```py
+Status code: 409
+
+"message": "Email already exists"
+``` 
 
 <br></br>
 
@@ -334,6 +402,13 @@ exercise_id: int
   }
 ]
   ```
+###### Failed Responses
+If exercise_id does not exist:
+  ```py
+Status code: 404
+
+"error": "Not Found"
+``` 
 
   <br></br>
 
@@ -350,10 +425,8 @@ Bearer Token: "token"
 
 ###### Body: All fields are required
 ```py
-{
   "name": "",
   "description": ""
-}
 ```
 
 ###### Response
@@ -364,6 +437,20 @@ Bearer Token: "token"
   "exercise_id": 
 }
 ```
+
+###### Failed Responses
+If user is not admin:
+```py
+Status code: 403
+
+"error": "You must be an admin to access this resource"
+``` 
+If a field is missing:
+```py
+Status code: 400
+
+"Missing data for required field."
+``` 
 
  <br></br>
 
@@ -396,6 +483,20 @@ Bearer Token: "token"
 }
 ```
 
+###### Failed Responses
+If user is not admin:
+```py
+Status code: 403
+
+"error": "You must be an admin to access this resource"
+``` 
+If exercise_id does not exist:
+```py
+Status code: 404
+
+"error": "Not Found"
+```
+
 <br></br>
 
 ### Delete Exercise: Admin only
@@ -410,6 +511,14 @@ Bearer Token: "token"
 user_id: int
 
 Bearer Token: "token"
+```
+
+###### Failed Responses
+If exercise_id does not exist:
+```py
+Status code: 404
+
+"error": "Not Found"
 ```
 
 <br></br>

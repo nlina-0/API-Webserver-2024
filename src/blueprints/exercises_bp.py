@@ -53,7 +53,7 @@ def update_exercise(id):
         if not exercises:
             abort(404)
         else:
-            exercise_update = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json)
+            exercise_update = ExerciseSchema(only=["exercise", "description"], unknown="exclude").load(request.json, partial=True)
             exercises.exercise = exercise_update.get("exercise", exercises.exercise)
             exercises.description = exercise_update.get("description", exercises.description)
             db.session.commit()

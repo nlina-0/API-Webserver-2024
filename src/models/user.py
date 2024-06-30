@@ -21,7 +21,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     # Marshmallow validator
     email = fields.Email(required=True)
-    password = fields.String(required=True)
+    password = fields.String(validate=Length(min=8, error='Password must be at least 8 characters long'), required=True)
 
     sessions = fields.List(fields.Nested("SessionSchema", exclude=["user"]))
     # session_sets = fields.List(fields.Nested("SessionSetSchema", exclude=["user", "session"]))

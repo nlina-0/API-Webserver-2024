@@ -12,9 +12,6 @@ class Exercise(db.Model):
     exercise: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(Text())
 
-    # exercises: Mapped[List["SessionExercise"]] = relationship(back_populates="exercise", cascade='all, delete-orphan')
-    # session_sets: Mapped[List["SessionSet"]] = relationship(back_populates="exercise")
-
 class ExerciseSchema(ma.Schema):
     exercise = fields.String(required=True)
     description = fields.String(required=True)
